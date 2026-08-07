@@ -283,6 +283,104 @@ img { display: block; max-width: 100%; }
 
 .cat-icon { font-size: 1.3rem; }
 
+.cat-icon-all { font-size: 1.3rem; }
+
+.cat-icon-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: block;
+  border: 2px solid transparent;
+}
+.cat-icon-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.category-pill.active .cat-icon-img {
+  border-color: #171200;
+}
+
+/* ---------- Category subcategory view ---------- */
+.subcat-section {
+  margin-bottom: 26px;
+}
+
+.subcat-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.subcat-tab {
+  background: var(--surface-2);
+  color: var(--gold);
+  font-weight: 800;
+  font-size: 0.95rem;
+  padding: 8px 16px;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(245, 180, 0, 0.35);
+}
+
+.subcat-count {
+  color: var(--text-faint);
+  font-size: 0.75rem;
+}
+
+.subcat-scroll {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 2px;
+}
+.subcat-scroll::-webkit-scrollbar { display: none; }
+
+.subcat-card {
+  flex: 0 0 auto;
+  width: 150px;
+  text-align: left;
+}
+
+.subcat-img-wrap {
+  position: relative;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  height: 130px;
+}
+.subcat-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.subcat-card .rating-chip {
+  padding: 4px 8px;
+  font-size: 0.68rem;
+}
+
+.subcat-name {
+  font-size: 0.82rem;
+  font-weight: 700;
+  margin-top: 8px;
+  line-height: 1.25;
+}
+.subcat-price {
+  font-size: 0.75rem;
+  color: var(--gold);
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+.category-empty {
+  text-align: center;
+  color: var(--text-faint);
+  padding: 40px 0;
+  font-size: 0.9rem;
+}
+
 /* ---------- Best Providers (horizontal image cards) ---------- */
 .provider-scroll {
   display: flex;
@@ -660,110 +758,127 @@ img { display: block; max-width: 100%; }
           <h3>Top Categories</h3>
           <a href="#" class="see-all">See All</a>
         </div>
-        <div class="category-row">
-          <button class="category-pill active">
-            <span class="cat-icon">▦</span>
+        <div class="category-row" id="category-row">
+          <button class="category-pill active" data-category="all">
+            <span class="cat-icon cat-icon-all">▦</span>
             <span>All</span>
           </button>
-          <button class="category-pill">
-            <span class="cat-icon">✂️</span>
-            <span>Haircut</span>
+          <button class="category-pill" data-category="hair">
+            <span class="cat-icon-img"><img src="https://images.unsplash.com/photo-1595152772835-219674b2a8a6?q=80&w=200&auto=format&fit=crop" alt="Hair" /></span>
+            <span>Hair</span>
           </button>
-          <button class="category-pill">
-            <span class="cat-icon">🧔</span>
-            <span>Beard Cut</span>
+          <button class="category-pill" data-category="face">
+            <span class="cat-icon-img"><img src="https://images.unsplash.com/photo-1522337660859-02fbefca4702?q=80&w=200&auto=format&fit=crop" alt="Face" /></span>
+            <span>Face</span>
           </button>
-          <button class="category-pill">
-            <span class="cat-icon">🛏️</span>
-            <span>Shaves</span>
+          <button class="category-pill" data-category="skin">
+            <span class="cat-icon-img"><img src="https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?q=80&w=200&auto=format&fit=crop" alt="Skin" /></span>
+            <span>Skin</span>
           </button>
-          <button class="category-pill">
-            <span class="cat-icon">💅</span>
-            <span>Manicure</span>
+          <button class="category-pill" data-category="nails">
+            <span class="cat-icon-img"><img src="https://images.unsplash.com/photo-1610992015732-2449b0dd2b8f?q=80&w=200&auto=format&fit=crop" alt="Nails" /></span>
+            <span>Nails</span>
+          </button>
+          <button class="category-pill" data-category="bodyart">
+            <span class="cat-icon-img"><img src="https://images.unsplash.com/photo-1590246814883-57c511e76523?q=80&w=200&auto=format&fit=crop" alt="Body Art" /></span>
+            <span>Body Art</span>
+          </button>
+          <button class="category-pill" data-category="wellness">
+            <span class="cat-icon-img"><img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?q=80&w=200&auto=format&fit=crop" alt="Wellness" /></span>
+            <span>Wellness</span>
           </button>
         </div>
       </section>
 
-      <!-- Best Providers -->
-      <section class="section">
-        <div class="section-head">
-          <h3>Best Providers</h3>
-          <a href="#" class="see-all">See All</a>
-        </div>
-        <div class="provider-scroll">
-          <button class="provider-card" data-provider="razor">
-            <div class="provider-img-wrap">
+      <!-- ===== Default "All" view ===== -->
+      <div id="all-view">
+
+        <!-- Best Providers -->
+        <section class="section">
+          <div class="section-head">
+            <h3>Best Providers</h3>
+            <a href="#" class="see-all">See All</a>
+          </div>
+          <div class="provider-scroll">
+            <button class="provider-card" data-provider="razor">
+              <div class="provider-img-wrap">
+                <img src="https://images.unsplash.com/photo-1585747860715-2ba37e788b70?q=80&w=600&auto=format&fit=crop" alt="Razor & Co. Barbershop" />
+                <span class="rating-chip">★ 4.9</span>
+                <span class="bookmark">🔖</span>
+              </div>
+            </button>
+            <button class="provider-card" data-provider="glow">
+              <div class="provider-img-wrap">
+                <img src="https://images.unsplash.com/photo-1522337660859-02fbefca4702?q=80&w=600&auto=format&fit=crop" alt="Glow Up Beauty Studio" />
+                <span class="rating-chip">★ 4.7</span>
+              </div>
+            </button>
+          </div>
+        </section>
+
+        <!-- Featured Providers -->
+        <section class="section">
+          <div class="featured-scroll">
+            <button class="featured-card" data-provider="razor">
               <img src="https://images.unsplash.com/photo-1585747860715-2ba37e788b70?q=80&w=600&auto=format&fit=crop" alt="Razor & Co. Barbershop" />
-              <span class="rating-chip">★ 4.9</span>
-              <span class="bookmark">🔖</span>
-            </div>
-          </button>
-          <button class="provider-card" data-provider="glow">
-            <div class="provider-img-wrap">
-              <img src="https://images.unsplash.com/photo-1522337660859-02fbefca4702?q=80&w=600&auto=format&fit=crop" alt="Glow Up Beauty Studio" />
-              <span class="rating-chip">★ 4.7</span>
-            </div>
-          </button>
-        </div>
-      </section>
-
-      <!-- Featured Providers -->
-      <section class="section">
-        <div class="featured-scroll">
-          <button class="featured-card" data-provider="razor">
-            <img src="https://images.unsplash.com/photo-1585747860715-2ba37e788b70?q=80&w=600&auto=format&fit=crop" alt="Razor & Co. Barbershop" />
-            <div class="featured-overlay">
-              <div class="featured-text">
-                <div class="featured-name">Razor &amp; Co. Barber...</div>
-                <div class="featured-loc">📍 5 Albert Road, Barnoldsw...</div>
+              <div class="featured-overlay">
+                <div class="featured-text">
+                  <div class="featured-name">Razor &amp; Co. Barber...</div>
+                  <div class="featured-loc">📍 5 Albert Road, Barnoldsw...</div>
+                </div>
+                <span class="arrow-btn">→</span>
               </div>
-              <span class="arrow-btn">→</span>
-            </div>
-          </button>
-          <button class="featured-card" data-provider="glow">
-            <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?q=80&w=600&auto=format&fit=crop" alt="Glow Up Beauty Studio" />
-            <div class="featured-overlay">
-              <div class="featured-text">
-                <div class="featured-name">Glow Up Beauty St...</div>
-                <div class="featured-loc">📍 12 Crescent Lane, Shor...</div>
+            </button>
+            <button class="featured-card" data-provider="glow">
+              <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?q=80&w=600&auto=format&fit=crop" alt="Glow Up Beauty Studio" />
+              <div class="featured-overlay">
+                <div class="featured-text">
+                  <div class="featured-name">Glow Up Beauty St...</div>
+                  <div class="featured-loc">📍 12 Crescent Lane, Shor...</div>
+                </div>
+                <span class="arrow-btn">→</span>
               </div>
-              <span class="arrow-btn">→</span>
-            </div>
-          </button>
-        </div>
-      </section>
+            </button>
+          </div>
+        </section>
 
-      <!-- Special Offers -->
-      <section class="section">
-        <div class="section-head">
-          <h3>Special Offers</h3>
-          <a href="#" class="see-all">See All</a>
-        </div>
-        <div class="offers-grid">
-          <button class="offer-card" data-provider="razor">
-            <div class="offer-img-wrap">
-              <img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?q=80&w=600&auto=format&fit=crop" alt="Razor Work Fred" />
-              <span class="offer-badge">20% Off Haircut</span>
-            </div>
-            <div class="offer-body">
-              <div class="offer-name">Razor Work Fred</div>
-              <div class="offer-sub">Quality, Trusted Services</div>
-              <span class="arrow-btn small">→</span>
-            </div>
-          </button>
-          <button class="offer-card" data-provider="nails">
-            <div class="offer-img-wrap">
-              <img src="https://images.unsplash.com/photo-1610992015732-2449b0dd2b8f?q=80&w=600&auto=format&fit=crop" alt="Nail Artistry Hub" />
-              <span class="offer-badge">15% Off Manicure</span>
-            </div>
-            <div class="offer-body">
-              <div class="offer-name">Nail Artistry Hub</div>
-              <div class="offer-sub">Premium Nail Services</div>
-              <span class="arrow-btn small">→</span>
-            </div>
-          </button>
-        </div>
-      </section>
+        <!-- Special Offers -->
+        <section class="section">
+          <div class="section-head">
+            <h3>Special Offers</h3>
+            <a href="#" class="see-all">See All</a>
+          </div>
+          <div class="offers-grid">
+            <button class="offer-card" data-provider="razor">
+              <div class="offer-img-wrap">
+                <img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?q=80&w=600&auto=format&fit=crop" alt="Razor Work Fred" />
+                <span class="offer-badge">20% Off Haircut</span>
+              </div>
+              <div class="offer-body">
+                <div class="offer-name">Razor Work Fred</div>
+                <div class="offer-sub">Quality, Trusted Services</div>
+                <span class="arrow-btn small">→</span>
+              </div>
+            </button>
+            <button class="offer-card" data-provider="nails">
+              <div class="offer-img-wrap">
+                <img src="https://images.unsplash.com/photo-1610992015732-2449b0dd2b8f?q=80&w=600&auto=format&fit=crop" alt="Nail Artistry Hub" />
+                <span class="offer-badge">15% Off Manicure</span>
+              </div>
+              <div class="offer-body">
+                <div class="offer-name">Nail Artistry Hub</div>
+                <div class="offer-sub">Premium Nail Services</div>
+                <span class="arrow-btn small">→</span>
+              </div>
+            </button>
+          </div>
+        </section>
+
+      </div>
+      <!-- ===== /Default "All" view ===== -->
+
+      <!-- ===== Category-specific view (built by JS) ===== -->
+      <div id="category-view" style="display:none;"></div>
 
       <div class="bottom-spacer"></div>
     </main>
@@ -859,13 +974,127 @@ const PROVIDERS = {
   },
 };
 
+// ==========================================================
+// Category taxonomy — matches the reference table:
+// # | Category | What sits under it
+// 1 | Hair     | Braids, Locs, Wigs, Colour, Barber, Beard, Kids Cuts
+// 2 | Face     | Makeup, Brows, Lashes
+// 3 | Skin     | Facials, Waxing, Scrubs, Spray Tan
+// 4 | Nails    | Mani, Pedi, Nail Art
+// 5 | Body Art | Tattoo, Henna, Piercing
+// 6 | Wellness | Massage, Therapy
+// ==========================================================
+
+const CATEGORY_DATA = {
+  hair: {
+    label: "Hair",
+    subcategories: {
+      "Barber": [
+        { name: "Razor & Co. Barbershop", address: "5 Albert Road, Barnoldswick", rating: "4.9", reviews: "214", distance: "0.8 km", price: 35, heroImg: "https://images.unsplash.com/photo-1585747860715-2ba37e788b70?q=80&w=900&auto=format&fit=crop", services: [{ name: "Classic Haircut", duration: "45 min", price: 35 }, { name: "Fade & Taper", duration: "60 min", price: 45 }] },
+        { name: "Razor Work Fred", address: "3 Mill Street, Barnoldswick", rating: "4.6", reviews: "98", distance: "1.1 km", price: 30, heroImg: "https://images.unsplash.com/photo-1503951914875-452162b0f3f1?q=80&w=900&auto=format&fit=crop", services: [{ name: "Skin Fade", duration: "40 min", price: 30 }, { name: "Line Up", duration: "15 min", price: 12 }] },
+      ],
+      "Beard": [
+        { name: "Beard Bros Studio", address: "9 Kings Row, Manhattan", rating: "4.8", reviews: "132", distance: "1.4 km", price: 25, heroImg: "https://images.unsplash.com/photo-1622287162716-f311baa1a2b8?q=80&w=900&auto=format&fit=crop", services: [{ name: "Beard Trim", duration: "30 min", price: 25 }, { name: "Hot Towel Shave", duration: "30 min", price: 30 }] },
+      ],
+      "Braids": [
+        { name: "Braided Roots Salon", address: "21 Palm Ave, Brooklyn", rating: "4.9", reviews: "176", distance: "2.0 km", price: 60, heroImg: "https://images.unsplash.com/photo-1594736797933-d0501ba2fe65?q=80&w=900&auto=format&fit=crop", services: [{ name: "Box Braids", duration: "3 hr", price: 90 }, { name: "Cornrows", duration: "1.5 hr", price: 60 }] },
+      ],
+      "Locs": [
+        { name: "Locs & Co.", address: "14 Ridge Lane, Queens", rating: "4.7", reviews: "84", distance: "2.4 km", price: 55, heroImg: "https://images.unsplash.com/photo-1621607512214-68297480165e?q=80&w=900&auto=format&fit=crop", services: [{ name: "Loc Retwist", duration: "1 hr", price: 55 }, { name: "Loc Styling", duration: "45 min", price: 45 }] },
+      ],
+      "Wigs": [
+        { name: "Wig Boutique NYC", address: "8 Harbor View, Manhattan", rating: "4.8", reviews: "121", distance: "1.7 km", price: 80, heroImg: "https://images.unsplash.com/photo-1560869713-7d0a29430803?q=80&w=900&auto=format&fit=crop", services: [{ name: "Wig Install", duration: "1.5 hr", price: 80 }, { name: "Wig Customization", duration: "2 hr", price: 110 }] },
+      ],
+      "Colour": [
+        { name: "Colour Bar Studio", address: "45 Hue Street, Brooklyn", rating: "4.6", reviews: "97", distance: "1.9 km", price: 70, heroImg: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?q=80&w=900&auto=format&fit=crop", services: [{ name: "Full Colour", duration: "2 hr", price: 95 }, { name: "Root Touch-Up", duration: "1 hr", price: 55 }] },
+      ],
+      "Kids Cuts": [
+        { name: "Little Clips", address: "6 Maple Court, Queens", rating: "4.9", reviews: "63", distance: "1.2 km", price: 20, heroImg: "https://images.unsplash.com/photo-1595152772835-219674b2a8a6?q=80&w=900&auto=format&fit=crop", services: [{ name: "Kids Haircut", duration: "25 min", price: 20 }, { name: "First Haircut Package", duration: "30 min", price: 25 }] },
+      ],
+    },
+  },
+  face: {
+    label: "Face",
+    subcategories: {
+      "Makeup": [
+        { name: "Glow Up Beauty Studio", address: "12 Crescent Lane, Shoreditch", rating: "4.7", reviews: "168", distance: "1.2 km", price: 65, heroImg: "https://images.unsplash.com/photo-1522337660859-02fbefca4702?q=80&w=900&auto=format&fit=crop", services: [{ name: "Full Makeup", duration: "60 min", price: 65 }, { name: "Bridal Makeup", duration: "90 min", price: 120 }] },
+      ],
+      "Brows": [
+        { name: "Brow Bar Studio", address: "3 Fenwick St, Shoreditch", rating: "4.8", reviews: "142", distance: "1.0 km", price: 20, heroImg: "https://images.unsplash.com/photo-1560750588-73207b1ef5b8?q=80&w=900&auto=format&fit=crop", services: [{ name: "Brow Shaping", duration: "20 min", price: 20 }, { name: "Brow Tint", duration: "15 min", price: 15 }] },
+      ],
+      "Lashes": [
+        { name: "Lash Lounge", address: "17 Velvet Rd, Shoreditch", rating: "4.9", reviews: "203", distance: "1.3 km", price: 45, heroImg: "https://images.unsplash.com/photo-1583001931096-959e9a1a6223?q=80&w=900&auto=format&fit=crop", services: [{ name: "Classic Lash Set", duration: "60 min", price: 45 }, { name: "Volume Lash Set", duration: "90 min", price: 65 }] },
+      ],
+    },
+  },
+  skin: {
+    label: "Skin",
+    subcategories: {
+      "Facials": [
+        { name: "Skin Clinic Studio", address: "22 Bloom Street, Manhattan", rating: "4.8", reviews: "154", distance: "1.6 km", price: 55, heroImg: "https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?q=80&w=900&auto=format&fit=crop", services: [{ name: "Signature Facial", duration: "50 min", price: 55 }, { name: "Deep Cleanse Facial", duration: "60 min", price: 65 }] },
+      ],
+      "Waxing": [
+        { name: "Smooth Skin Waxing Co.", address: "10 Silk Ave, Brooklyn", rating: "4.6", reviews: "89", distance: "1.8 km", price: 25, heroImg: "https://images.unsplash.com/photo-1519415943484-9fa1873496d4?q=80&w=900&auto=format&fit=crop", services: [{ name: "Full Leg Wax", duration: "40 min", price: 35 }, { name: "Brow Wax", duration: "10 min", price: 12 }] },
+      ],
+      "Scrubs": [
+        { name: "Renew Body Scrub Bar", address: "5 Cedar Court, Queens", rating: "4.7", reviews: "71", distance: "2.1 km", price: 40, heroImg: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?q=80&w=900&auto=format&fit=crop", services: [{ name: "Body Scrub", duration: "35 min", price: 40 }, { name: "Salt Scrub & Wrap", duration: "50 min", price: 60 }] },
+      ],
+      "Spray Tan": [
+        { name: "Sunless Studio", address: "31 Bronze Ln, Manhattan", rating: "4.9", reviews: "118", distance: "1.3 km", price: 35, heroImg: "https://images.unsplash.com/photo-1600334129128-685c5582fd35?q=80&w=900&auto=format&fit=crop", services: [{ name: "Full Body Spray Tan", duration: "25 min", price: 35 }, { name: "Custom Airbrush Tan", duration: "35 min", price: 50 }] },
+      ],
+    },
+  },
+  nails: {
+    label: "Nails",
+    subcategories: {
+      "Mani": [
+        { name: "Nail Artistry Hub", address: "8 Harbor View, Manhattan", rating: "4.8", reviews: "301", distance: "1.5 km", price: 28, heroImg: "https://images.unsplash.com/photo-1610992015732-2449b0dd2b8f?q=80&w=900&auto=format&fit=crop", services: [{ name: "Classic Manicure", duration: "40 min", price: 28 }, { name: "Gel Polish", duration: "45 min", price: 32 }] },
+      ],
+      "Pedi": [
+        { name: "Sole Care Studio", address: "19 Marina Walk, Brooklyn", rating: "4.7", reviews: "162", distance: "1.9 km", price: 38, heroImg: "https://images.unsplash.com/photo-1519014816548-bf5fe059798b?q=80&w=900&auto=format&fit=crop", services: [{ name: "Classic Pedicure", duration: "45 min", price: 38 }, { name: "Spa Pedicure", duration: "60 min", price: 50 }] },
+      ],
+      "Nail Art": [
+        { name: "Nail Art Design Co.", address: "27 Canvas St, Queens", rating: "4.9", reviews: "210", distance: "2.2 km", price: 40, heroImg: "https://images.unsplash.com/photo-1604654894610-df63bc536371?q=80&w=900&auto=format&fit=crop", services: [{ name: "Custom Nail Art", duration: "60 min", price: 40 }, { name: "3D Nail Design", duration: "75 min", price: 55 }] },
+      ],
+    },
+  },
+  bodyart: {
+    label: "Body Art",
+    subcategories: {
+      "Tattoo": [
+        { name: "Ink & Iron Tattoo Parlor", address: "40 Steel Row, Brooklyn", rating: "4.8", reviews: "245", distance: "2.5 km", price: 100, heroImg: "https://images.unsplash.com/photo-1590246814883-57c511e76523?q=80&w=900&auto=format&fit=crop", services: [{ name: "Small Tattoo", duration: "60 min", price: 100 }, { name: "Custom Sleeve Session", duration: "3 hr", price: 350 }] },
+      ],
+      "Henna": [
+        { name: "Henna Art Studio", address: "16 Spice Lane, Queens", rating: "4.9", reviews: "133", distance: "1.7 km", price: 30, heroImg: "https://images.unsplash.com/photo-1610171400429-fea427e2b7c7?q=80&w=900&auto=format&fit=crop", services: [{ name: "Bridal Henna", duration: "2 hr", price: 90 }, { name: "Simple Henna Design", duration: "30 min", price: 30 }] },
+      ],
+      "Piercing": [
+        { name: "Piercing Studio 8", address: "2 Needle St, Manhattan", rating: "4.7", reviews: "187", distance: "1.4 km", price: 35, heroImg: "https://images.unsplash.com/photo-1595535373192-167c4a6eaf3e?q=80&w=900&auto=format&fit=crop", services: [{ name: "Ear Piercing", duration: "15 min", price: 35 }, { name: "Nose Piercing", duration: "15 min", price: 40 }] },
+      ],
+    },
+  },
+  wellness: {
+    label: "Wellness",
+    subcategories: {
+      "Massage": [
+        { name: "Serenity Massage Spa", address: "50 Calm Ave, Manhattan", rating: "4.9", reviews: "276", distance: "1.1 km", price: 70, heroImg: "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?q=80&w=900&auto=format&fit=crop", services: [{ name: "Swedish Massage", duration: "60 min", price: 70 }, { name: "Deep Tissue Massage", duration: "60 min", price: 85 }] },
+      ],
+      "Therapy": [
+        { name: "Wellness Therapy Center", address: "13 Balance Blvd, Brooklyn", rating: "4.8", reviews: "154", distance: "1.6 km", price: 80, heroImg: "https://images.unsplash.com/photo-1591343395902-9420ce256bf6?q=80&w=900&auto=format&fit=crop", services: [{ name: "Physical Therapy Session", duration: "45 min", price: 80 }, { name: "Reflexology", duration: "40 min", price: 60 }] },
+      ],
+    },
+  },
+};
+
 const homeScreen = document.getElementById("home-screen");
 const detailScreen = document.getElementById("detail-screen");
 const backBtn = document.getElementById("back-btn");
+const allView = document.getElementById("all-view");
+const categoryView = document.getElementById("category-view");
 
-function openProvider(id) {
-  const data = PROVIDERS[id];
-  if (!data) return;
+let currentProviderData = null;
+
+function renderDetail(data) {
+  currentProviderData = data;
 
   document.getElementById("detail-hero-img").src = data.heroImg;
   document.getElementById("detail-name").textContent = data.name;
@@ -890,9 +1119,18 @@ function openProvider(id) {
     list.appendChild(row);
   });
 
+  // reset tabs to "Services"
+  document.querySelectorAll(".tab").forEach((t) => t.classList.remove("active"));
+  document.querySelector('.tab[data-tab="services"]').classList.add("active");
+
   homeScreen.classList.remove("active");
   detailScreen.classList.add("active");
   window.scrollTo({ top: 0, behavior: "instant" });
+}
+
+function openProvider(id) {
+  const data = PROVIDERS[id];
+  if (data) renderDetail(data);
 }
 
 function goHome() {
@@ -915,20 +1153,74 @@ document.querySelectorAll(".tab").forEach((tab) => {
     const list = document.getElementById("services-list");
     if (tab.dataset.tab === "reviews") {
       list.innerHTML = `<div style="color:var(--text-faint); text-align:center; padding:30px 0;">Reviews coming soon.</div>`;
-    } else {
-      // re-render services for the current provider by re-reading the name
-      const name = document.getElementById("detail-name").textContent;
-      const id = Object.keys(PROVIDERS).find((k) => PROVIDERS[k].name === name);
-      if (id) openProvider(id);
+    } else if (currentProviderData) {
+      renderDetail(currentProviderData);
     }
   });
 });
+
+// ---------- Category selection: render subcategory feed ----------
+
+function buildSubcatCard(place) {
+  const card = document.createElement("button");
+  card.className = "subcat-card";
+  card.innerHTML = `
+    <div class="subcat-img-wrap">
+      <img src="${place.heroImg}" alt="${place.name}" />
+      <span class="rating-chip">★ ${place.rating}</span>
+    </div>
+    <div class="subcat-name">${place.name}</div>
+    <div class="subcat-price">From $${place.price}</div>
+  `;
+  card.addEventListener("click", () => renderDetail(place));
+  return card;
+}
+
+function renderCategory(categoryKey) {
+  categoryView.innerHTML = "";
+
+  if (categoryKey === "all") {
+    allView.style.display = "";
+    categoryView.style.display = "none";
+    return;
+  }
+
+  allView.style.display = "none";
+  categoryView.style.display = "";
+
+  const category = CATEGORY_DATA[categoryKey];
+  if (!category) {
+    categoryView.innerHTML = `<div class="category-empty">No listings yet in this category.</div>`;
+    return;
+  }
+
+  Object.entries(category.subcategories).forEach(([subName, places]) => {
+    const section = document.createElement("section");
+    section.className = "subcat-section";
+
+    const head = document.createElement("div");
+    head.className = "subcat-head";
+    head.innerHTML = `
+      <span class="subcat-tab">${subName}</span>
+      <span class="subcat-count">${places.length} ${places.length === 1 ? "place" : "places"}</span>
+    `;
+    section.appendChild(head);
+
+    const scroll = document.createElement("div");
+    scroll.className = "subcat-scroll";
+    places.forEach((place) => scroll.appendChild(buildSubcatCard(place)));
+    section.appendChild(scroll);
+
+    categoryView.appendChild(section);
+  });
+}
 
 // Category pill selection state
 document.querySelectorAll(".category-pill").forEach((pill) => {
   pill.addEventListener("click", () => {
     document.querySelectorAll(".category-pill").forEach((p) => p.classList.remove("active"));
     pill.classList.add("active");
+    renderCategory(pill.dataset.category);
   });
 });
 

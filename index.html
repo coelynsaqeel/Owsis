@@ -290,13 +290,14 @@ img { display: block; max-width: 100%; }
   height: 40px;
   border-radius: 50%;
   overflow: hidden;
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border: 2px solid transparent;
 }
-.cat-icon-img img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.cat-icon-img .tile-icon {
+  font-size: 1.1rem;
+  filter: none;
 }
 .category-pill.active .cat-icon-img {
   border-color: #171200;
@@ -379,6 +380,106 @@ img { display: block; max-width: 100%; }
   color: var(--text-faint);
   padding: 40px 0;
   font-size: 0.9rem;
+}
+
+/* ---------- Icon tiles (replace photos so the visual always matches the exact service) ---------- */
+.tile {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.tile::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.14), transparent 55%);
+}
+.tile-icon {
+  font-size: 2.1rem;
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.35));
+}
+
+.tile-hair     { background: linear-gradient(135deg, #4a3212, #8a5a1a); }
+.tile-face     { background: linear-gradient(135deg, #5c1a3f, #a63e78); }
+.tile-skin     { background: linear-gradient(135deg, #7a3d10, #d98a3d); }
+.tile-nails    { background: linear-gradient(135deg, #6e1030, #c93163); }
+.tile-bodyart  { background: linear-gradient(135deg, #101820, #2c4451); }
+.tile-wellness { background: linear-gradient(135deg, #123324, #2f7a53); }
+
+.promo-tile {
+  position: absolute;
+  inset: 0;
+  mask-image: linear-gradient(to right, transparent 0%, transparent 38%, black 62%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, transparent 38%, black 62%);
+}
+.promo-tile .tile-icon { font-size: 4rem; }
+
+.provider-img-wrap .tile-icon,
+.subcat-img-wrap .tile-icon,
+.offer-img-wrap .tile-icon { font-size: 2.4rem; }
+
+.featured-card .tile-icon { font-size: 3rem; }
+
+#detail-hero-tile .tile-icon { font-size: 4.5rem; }
+
+/* ---------- Detail tabs: Services / Description / Timetable / Reviews ---------- */
+.tab-row {
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.tab-row::-webkit-scrollbar { display: none; }
+.tab-row {
+  flex-wrap: nowrap;
+}
+.tab {
+  flex: 0 0 auto;
+  padding: 12px 18px;
+  white-space: nowrap;
+}
+
+.description-panel {
+  margin-top: 18px;
+  background: var(--surface-2);
+  border-radius: var(--radius-md);
+  padding: 18px;
+  color: var(--text-dim);
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+.description-panel h4 {
+  margin: 0 0 8px;
+  color: var(--text);
+  font-size: 1rem;
+}
+
+.timetable-panel {
+  margin-top: 18px;
+  background: var(--surface-2);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+.timetable-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 13px 18px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  font-size: 0.9rem;
+}
+.timetable-row:last-child { border-bottom: none; }
+.timetable-day { font-weight: 700; color: var(--text); }
+.timetable-hours { color: var(--text-dim); }
+.timetable-row.closed .timetable-hours { color: var(--text-faint); }
+.timetable-note {
+  padding: 12px 18px;
+  font-size: 0.76rem;
+  color: var(--text-faint);
+  background: rgba(245,180,0,0.06);
 }
 
 /* ---------- Best Providers (horizontal image cards) ---------- */
@@ -749,7 +850,7 @@ img { display: block; max-width: 100%; }
           <h2>20% Off<br />Your First Cut</h2>
           <button class="btn-primary btn-small">Get Offer Now</button>
         </div>
-        <img class="promo-img" src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?q=80&w=600&auto=format&fit=crop" alt="Barber cutting hair" />
+        <div class="promo-tile tile-hair"><span class="tile-icon">✂️</span></div>
       </section>
 
       <!-- Top Categories -->
@@ -764,27 +865,27 @@ img { display: block; max-width: 100%; }
             <span>All</span>
           </button>
           <button class="category-pill" data-category="hair">
-            <span class="cat-icon-img"><img src="https://images.unsplash.com/photo-1595152772835-219674b2a8a6?q=80&w=200&auto=format&fit=crop" alt="Hair" /></span>
+            <span class="cat-icon-img tile-hair"><span class="tile-icon">✂️</span></span>
             <span>Hair</span>
           </button>
           <button class="category-pill" data-category="face">
-            <span class="cat-icon-img"><img src="https://images.unsplash.com/photo-1522337660859-02fbefca4702?q=80&w=200&auto=format&fit=crop" alt="Face" /></span>
+            <span class="cat-icon-img tile-face"><span class="tile-icon">💄</span></span>
             <span>Face</span>
           </button>
           <button class="category-pill" data-category="skin">
-            <span class="cat-icon-img"><img src="https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?q=80&w=200&auto=format&fit=crop" alt="Skin" /></span>
+            <span class="cat-icon-img tile-skin"><span class="tile-icon">🧖‍♀️</span></span>
             <span>Skin</span>
           </button>
           <button class="category-pill" data-category="nails">
-            <span class="cat-icon-img"><img src="https://images.unsplash.com/photo-1610992015732-2449b0dd2b8f?q=80&w=200&auto=format&fit=crop" alt="Nails" /></span>
+            <span class="cat-icon-img tile-nails"><span class="tile-icon">💅</span></span>
             <span>Nails</span>
           </button>
           <button class="category-pill" data-category="bodyart">
-            <span class="cat-icon-img"><img src="https://images.unsplash.com/photo-1590246814883-57c511e76523?q=80&w=200&auto=format&fit=crop" alt="Body Art" /></span>
+            <span class="cat-icon-img tile-bodyart"><span class="tile-icon">🪡</span></span>
             <span>Body Art</span>
           </button>
           <button class="category-pill" data-category="wellness">
-            <span class="cat-icon-img"><img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?q=80&w=200&auto=format&fit=crop" alt="Wellness" /></span>
+            <span class="cat-icon-img tile-wellness"><span class="tile-icon">💆‍♀️</span></span>
             <span>Wellness</span>
           </button>
         </div>
@@ -802,15 +903,21 @@ img { display: block; max-width: 100%; }
           <div class="provider-scroll">
             <button class="provider-card" data-provider="razor">
               <div class="provider-img-wrap">
-                <img src="https://images.unsplash.com/photo-1585747860715-2ba37e788b70?q=80&w=600&auto=format&fit=crop" alt="Razor & Co. Barbershop" />
+                <div class="tile tile-hair"><span class="tile-icon">✂️</span></div>
                 <span class="rating-chip">★ 4.9</span>
                 <span class="bookmark">🔖</span>
               </div>
             </button>
             <button class="provider-card" data-provider="glow">
               <div class="provider-img-wrap">
-                <img src="https://images.unsplash.com/photo-1522337660859-02fbefca4702?q=80&w=600&auto=format&fit=crop" alt="Glow Up Beauty Studio" />
+                <div class="tile tile-face"><span class="tile-icon">💄</span></div>
                 <span class="rating-chip">★ 4.7</span>
+              </div>
+            </button>
+            <button class="provider-card" data-provider="nails">
+              <div class="provider-img-wrap">
+                <div class="tile tile-nails"><span class="tile-icon">💅</span></div>
+                <span class="rating-chip">★ 4.8</span>
               </div>
             </button>
           </div>
@@ -820,7 +927,7 @@ img { display: block; max-width: 100%; }
         <section class="section">
           <div class="featured-scroll">
             <button class="featured-card" data-provider="razor">
-              <img src="https://images.unsplash.com/photo-1585747860715-2ba37e788b70?q=80&w=600&auto=format&fit=crop" alt="Razor & Co. Barbershop" />
+              <div class="tile tile-hair"><span class="tile-icon">✂️</span></div>
               <div class="featured-overlay">
                 <div class="featured-text">
                   <div class="featured-name">Razor &amp; Co. Barber...</div>
@@ -830,7 +937,7 @@ img { display: block; max-width: 100%; }
               </div>
             </button>
             <button class="featured-card" data-provider="glow">
-              <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?q=80&w=600&auto=format&fit=crop" alt="Glow Up Beauty Studio" />
+              <div class="tile tile-face"><span class="tile-icon">💄</span></div>
               <div class="featured-overlay">
                 <div class="featured-text">
                   <div class="featured-name">Glow Up Beauty St...</div>
@@ -851,7 +958,7 @@ img { display: block; max-width: 100%; }
           <div class="offers-grid">
             <button class="offer-card" data-provider="razor">
               <div class="offer-img-wrap">
-                <img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?q=80&w=600&auto=format&fit=crop" alt="Razor Work Fred" />
+                <div class="tile tile-hair"><span class="tile-icon">✂️</span></div>
                 <span class="offer-badge">20% Off Haircut</span>
               </div>
               <div class="offer-body">
@@ -862,7 +969,7 @@ img { display: block; max-width: 100%; }
             </button>
             <button class="offer-card" data-provider="nails">
               <div class="offer-img-wrap">
-                <img src="https://images.unsplash.com/photo-1610992015732-2449b0dd2b8f?q=80&w=600&auto=format&fit=crop" alt="Nail Artistry Hub" />
+                <div class="tile tile-nails"><span class="tile-icon">💅</span></div>
                 <span class="offer-badge">15% Off Manicure</span>
               </div>
               <div class="offer-body">
@@ -887,10 +994,10 @@ img { display: block; max-width: 100%; }
     <main id="detail-screen" class="screen">
 
       <div class="detail-hero">
-        <img id="detail-hero-img" src="https://images.unsplash.com/photo-1585747860715-2ba37e788b70?q=80&w=900&auto=format&fit=crop" alt="Provider" />
+        <div id="detail-hero-tile" class="tile tile-hair"><span class="tile-icon" id="detail-hero-icon">✂️</span></div>
         <button class="back-btn" id="back-btn" aria-label="Back">←</button>
         <span class="status-chip available">● Available</span>
-        <span class="status-chip role">Barber</span>
+        <span class="status-chip role" id="detail-role">Barber</span>
       </div>
 
       <div class="detail-body">
@@ -909,10 +1016,12 @@ img { display: block; max-width: 100%; }
 
         <div class="tab-row">
           <button class="tab active" data-tab="services">Services</button>
+          <button class="tab" data-tab="description">Description</button>
+          <button class="tab" data-tab="timetable">Timetable</button>
           <button class="tab" data-tab="reviews">Reviews</button>
         </div>
 
-        <div id="services-list" class="services-list"><!-- injected --></div>
+        <div id="tab-content"><!-- injected --></div>
       </div>
 
       <div class="book-bar">
@@ -928,161 +1037,254 @@ img { display: block; max-width: 100%; }
 
 <script>
 // ==========================================================
-// GlowUp — provider data + screen navigation
+// GlowUp — category taxonomy, providers, and screen logic
 // ==========================================================
 
-const PROVIDERS = {
-  razor: {
-    name: "Razor & Co. Barbershop",
-    address: "5 Albert Road, Barnoldswick",
-    rating: "4.9",
-    reviews: "214",
-    distance: "0.8 km",
-    heroImg: "https://images.unsplash.com/photo-1585747860715-2ba37e788b70?q=80&w=900&auto=format&fit=crop",
-    services: [
-      { name: "Classic Haircut", duration: "45 min", price: 35 },
-      { name: "Fade & Taper", duration: "60 min", price: 45 },
-      { name: "Beard Trim", duration: "30 min", price: 25 },
-      { name: "Hot Towel Shave", duration: "30 min", price: 30 },
-    ],
-  },
-  glow: {
-    name: "Glow Up Beauty Studio",
-    address: "12 Crescent Lane, Shoreditch",
-    rating: "4.7",
-    reviews: "168",
-    distance: "1.2 km",
-    heroImg: "https://images.unsplash.com/photo-1560066984-138dadb4c035?q=80&w=900&auto=format&fit=crop",
-    services: [
-      { name: "Signature Facial", duration: "50 min", price: 55 },
-      { name: "Brow Shaping", duration: "20 min", price: 20 },
-      { name: "Full Makeup", duration: "60 min", price: 65 },
-    ],
-  },
-  nails: {
-    name: "Nail Artistry Hub",
-    address: "8 Harbor View, Manhattan",
-    rating: "4.8",
-    reviews: "301",
-    distance: "1.5 km",
-    heroImg: "https://images.unsplash.com/photo-1610992015732-2449b0dd2b8f?q=80&w=900&auto=format&fit=crop",
-    services: [
-      { name: "Classic Manicure", duration: "40 min", price: 28 },
-      { name: "Gel Polish", duration: "45 min", price: 32 },
-      { name: "Pedicure", duration: "50 min", price: 38 },
-    ],
-  },
-};
+// Shared weekly hours templates (used to build each place's Timetable tab)
+const HOURS_STANDARD = [
+  ["Mon", "9:00 AM – 6:00 PM"], ["Tue", "9:00 AM – 6:00 PM"], ["Wed", "9:00 AM – 6:00 PM"],
+  ["Thu", "9:00 AM – 7:00 PM"], ["Fri", "9:00 AM – 7:00 PM"], ["Sat", "10:00 AM – 5:00 PM"],
+  ["Sun", "Closed"],
+];
+const HOURS_LATE = [
+  ["Mon", "11:00 AM – 8:00 PM"], ["Tue", "11:00 AM – 8:00 PM"], ["Wed", "11:00 AM – 8:00 PM"],
+  ["Thu", "11:00 AM – 9:00 PM"], ["Fri", "11:00 AM – 9:00 PM"], ["Sat", "10:00 AM – 9:00 PM"],
+  ["Sun", "12:00 PM – 6:00 PM"],
+];
+const HOURS_WEEKDAYS_ONLY = [
+  ["Mon", "9:00 AM – 5:00 PM"], ["Tue", "9:00 AM – 5:00 PM"], ["Wed", "9:00 AM – 5:00 PM"],
+  ["Thu", "9:00 AM – 5:00 PM"], ["Fri", "9:00 AM – 5:00 PM"], ["Sat", "Closed"],
+  ["Sun", "Closed"],
+];
 
 // ==========================================================
 // Category taxonomy — matches the reference table:
-// # | Category | What sits under it
-// 1 | Hair     | Braids, Locs, Wigs, Colour, Barber, Beard, Kids Cuts
-// 2 | Face     | Makeup, Brows, Lashes
-// 3 | Skin     | Facials, Waxing, Scrubs, Spray Tan
-// 4 | Nails    | Mani, Pedi, Nail Art
-// 5 | Body Art | Tattoo, Henna, Piercing
-// 6 | Wellness | Massage, Therapy
+// # | Category | Sub-categories                                  | Specialist title
+// 1 | Hair     | Braids, Locs, Wigs, Colour, Barber, Beard, Kids | Barber / Braider / Loctician / Colourist...
+// 2 | Face     | Makeup, Brows, Lashes                           | Makeup Artist / Brow Specialist / Lash Tech
+// 3 | Skin     | Facials, Waxing, Scrubs, Spray Tan              | Esthetician / Waxing Specialist...
+// 4 | Nails    | Mani, Pedi, Nail Art                            | Nail Technician / Nail Artist
+// 5 | Body Art | Tattoo, Henna, Piercing                         | Tattoo Artist / Henna Artist / Piercer
+// 6 | Wellness | Massage, Therapy                                | Massage Therapist / Therapist
 // ==========================================================
 
 const CATEGORY_DATA = {
   hair: {
     label: "Hair",
+    tile: "tile-hair",
     subcategories: {
-      "Barber": [
-        { name: "Razor & Co. Barbershop", address: "5 Albert Road, Barnoldswick", rating: "4.9", reviews: "214", distance: "0.8 km", price: 35, heroImg: "https://images.unsplash.com/photo-1585747860715-2ba37e788b70?q=80&w=900&auto=format&fit=crop", services: [{ name: "Classic Haircut", duration: "45 min", price: 35 }, { name: "Fade & Taper", duration: "60 min", price: 45 }] },
-        { name: "Razor Work Fred", address: "3 Mill Street, Barnoldswick", rating: "4.6", reviews: "98", distance: "1.1 km", price: 30, heroImg: "https://images.unsplash.com/photo-1503951914875-452162b0f3f1?q=80&w=900&auto=format&fit=crop", services: [{ name: "Skin Fade", duration: "40 min", price: 30 }, { name: "Line Up", duration: "15 min", price: 12 }] },
-      ],
-      "Beard": [
-        { name: "Beard Bros Studio", address: "9 Kings Row, Manhattan", rating: "4.8", reviews: "132", distance: "1.4 km", price: 25, heroImg: "https://images.unsplash.com/photo-1622287162716-f311baa1a2b8?q=80&w=900&auto=format&fit=crop", services: [{ name: "Beard Trim", duration: "30 min", price: 25 }, { name: "Hot Towel Shave", duration: "30 min", price: 30 }] },
-      ],
-      "Braids": [
-        { name: "Braided Roots Salon", address: "21 Palm Ave, Brooklyn", rating: "4.9", reviews: "176", distance: "2.0 km", price: 60, heroImg: "https://images.unsplash.com/photo-1594736797933-d0501ba2fe65?q=80&w=900&auto=format&fit=crop", services: [{ name: "Box Braids", duration: "3 hr", price: 90 }, { name: "Cornrows", duration: "1.5 hr", price: 60 }] },
-      ],
-      "Locs": [
-        { name: "Locs & Co.", address: "14 Ridge Lane, Queens", rating: "4.7", reviews: "84", distance: "2.4 km", price: 55, heroImg: "https://images.unsplash.com/photo-1621607512214-68297480165e?q=80&w=900&auto=format&fit=crop", services: [{ name: "Loc Retwist", duration: "1 hr", price: 55 }, { name: "Loc Styling", duration: "45 min", price: 45 }] },
-      ],
-      "Wigs": [
-        { name: "Wig Boutique NYC", address: "8 Harbor View, Manhattan", rating: "4.8", reviews: "121", distance: "1.7 km", price: 80, heroImg: "https://images.unsplash.com/photo-1560869713-7d0a29430803?q=80&w=900&auto=format&fit=crop", services: [{ name: "Wig Install", duration: "1.5 hr", price: 80 }, { name: "Wig Customization", duration: "2 hr", price: 110 }] },
-      ],
-      "Colour": [
-        { name: "Colour Bar Studio", address: "45 Hue Street, Brooklyn", rating: "4.6", reviews: "97", distance: "1.9 km", price: 70, heroImg: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?q=80&w=900&auto=format&fit=crop", services: [{ name: "Full Colour", duration: "2 hr", price: 95 }, { name: "Root Touch-Up", duration: "1 hr", price: 55 }] },
-      ],
-      "Kids Cuts": [
-        { name: "Little Clips", address: "6 Maple Court, Queens", rating: "4.9", reviews: "63", distance: "1.2 km", price: 20, heroImg: "https://images.unsplash.com/photo-1595152772835-219674b2a8a6?q=80&w=900&auto=format&fit=crop", services: [{ name: "Kids Haircut", duration: "25 min", price: 20 }, { name: "First Haircut Package", duration: "30 min", price: 25 }] },
-      ],
+      "Barber": {
+        role: "Barber", icon: "✂️", hours: HOURS_STANDARD,
+        places: [
+          { name: "Razor & Co. Barbershop", address: "5 Albert Road, Barnoldswick", rating: "4.9", reviews: "214", distance: "0.8 km", services: [{ name: "Classic Haircut", duration: "45 min", price: 35 }, { name: "Fade & Taper", duration: "60 min", price: 45 }] },
+          { name: "Razor Work Fred", address: "3 Mill Street, Barnoldswick", rating: "4.6", reviews: "98", distance: "1.1 km", services: [{ name: "Skin Fade", duration: "40 min", price: 30 }, { name: "Line Up", duration: "15 min", price: 12 }] },
+          { name: "The Gentlemen's Chair", address: "18 Oxford Row, Manhattan", rating: "4.8", reviews: "176", distance: "1.6 km", services: [{ name: "Classic Cut", duration: "40 min", price: 32 }, { name: "Cut & Shave Combo", duration: "70 min", price: 55 }] },
+        ],
+      },
+      "Beard": {
+        role: "Barber", icon: "🧔", hours: HOURS_STANDARD,
+        places: [
+          { name: "Beard Bros Studio", address: "9 Kings Row, Manhattan", rating: "4.8", reviews: "132", distance: "1.4 km", services: [{ name: "Beard Trim", duration: "30 min", price: 25 }, { name: "Hot Towel Shave", duration: "30 min", price: 30 }] },
+          { name: "Whisker Works", address: "27 Cobble Lane, Brooklyn", rating: "4.7", reviews: "88", distance: "1.9 km", services: [{ name: "Beard Sculpting", duration: "35 min", price: 28 }, { name: "Beard Dye", duration: "25 min", price: 22 }] },
+        ],
+      },
+      "Braids": {
+        role: "Braider", icon: "💇🏾‍♀️", hours: HOURS_LATE,
+        places: [
+          { name: "Braided Roots Salon", address: "21 Palm Ave, Brooklyn", rating: "4.9", reviews: "176", distance: "2.0 km", services: [{ name: "Box Braids", duration: "3 hr", price: 90 }, { name: "Cornrows", duration: "1.5 hr", price: 60 }] },
+          { name: "Crown Braid Bar", address: "60 Willow St, Queens", rating: "4.7", reviews: "119", distance: "2.3 km", services: [{ name: "Knotless Braids", duration: "3.5 hr", price: 110 }, { name: "Kids Braids", duration: "1 hr", price: 40 }] },
+        ],
+      },
+      "Locs": {
+        role: "Loctician", icon: "🌀", hours: HOURS_LATE,
+        places: [
+          { name: "Locs & Co.", address: "14 Ridge Lane, Queens", rating: "4.7", reviews: "84", distance: "2.4 km", services: [{ name: "Loc Retwist", duration: "1 hr", price: 55 }, { name: "Loc Styling", duration: "45 min", price: 45 }] },
+          { name: "Rooted Locs Studio", address: "33 Garden Row, Brooklyn", rating: "4.8", reviews: "102", distance: "2.6 km", services: [{ name: "Starter Locs", duration: "2.5 hr", price: 120 }, { name: "Loc Maintenance", duration: "1 hr", price: 50 }] },
+        ],
+      },
+      "Wigs": {
+        role: "Wig Specialist", icon: "👱‍♀️", hours: HOURS_STANDARD,
+        places: [
+          { name: "Wig Boutique NYC", address: "8 Harbor View, Manhattan", rating: "4.8", reviews: "121", distance: "1.7 km", services: [{ name: "Wig Install", duration: "1.5 hr", price: 80 }, { name: "Wig Customization", duration: "2 hr", price: 110 }] },
+          { name: "Silk Press & Wigs", address: "5 Lace Ave, Queens", rating: "4.6", reviews: "77", distance: "2.1 km", services: [{ name: "Lace Frontal Install", duration: "2 hr", price: 95 }, { name: "Wig Revamp", duration: "1 hr", price: 60 }] },
+        ],
+      },
+      "Colour": {
+        role: "Colourist", icon: "🎨", hours: HOURS_STANDARD,
+        places: [
+          { name: "Colour Bar Studio", address: "45 Hue Street, Brooklyn", rating: "4.6", reviews: "97", distance: "1.9 km", services: [{ name: "Full Colour", duration: "2 hr", price: 95 }, { name: "Root Touch-Up", duration: "1 hr", price: 55 }] },
+          { name: "Balayage House", address: "22 Amber Court, Manhattan", rating: "4.9", reviews: "203", distance: "1.5 km", services: [{ name: "Balayage", duration: "2.5 hr", price: 130 }, { name: "Toner & Gloss", duration: "45 min", price: 45 }] },
+        ],
+      },
+      "Kids Cuts": {
+        role: "Kids Stylist", icon: "🧒", hours: HOURS_WEEKDAYS_ONLY,
+        places: [
+          { name: "Little Clips", address: "6 Maple Court, Queens", rating: "4.9", reviews: "63", distance: "1.2 km", services: [{ name: "Kids Haircut", duration: "25 min", price: 20 }, { name: "First Haircut Package", duration: "30 min", price: 25 }] },
+          { name: "Small Fry Studio", address: "11 Buttercup Ln, Brooklyn", rating: "4.7", reviews: "51", distance: "1.6 km", services: [{ name: "Kids Trim", duration: "20 min", price: 18 }, { name: "Kids Fade", duration: "30 min", price: 24 }] },
+        ],
+      },
     },
   },
   face: {
     label: "Face",
+    tile: "tile-face",
     subcategories: {
-      "Makeup": [
-        { name: "Glow Up Beauty Studio", address: "12 Crescent Lane, Shoreditch", rating: "4.7", reviews: "168", distance: "1.2 km", price: 65, heroImg: "https://images.unsplash.com/photo-1522337660859-02fbefca4702?q=80&w=900&auto=format&fit=crop", services: [{ name: "Full Makeup", duration: "60 min", price: 65 }, { name: "Bridal Makeup", duration: "90 min", price: 120 }] },
-      ],
-      "Brows": [
-        { name: "Brow Bar Studio", address: "3 Fenwick St, Shoreditch", rating: "4.8", reviews: "142", distance: "1.0 km", price: 20, heroImg: "https://images.unsplash.com/photo-1560750588-73207b1ef5b8?q=80&w=900&auto=format&fit=crop", services: [{ name: "Brow Shaping", duration: "20 min", price: 20 }, { name: "Brow Tint", duration: "15 min", price: 15 }] },
-      ],
-      "Lashes": [
-        { name: "Lash Lounge", address: "17 Velvet Rd, Shoreditch", rating: "4.9", reviews: "203", distance: "1.3 km", price: 45, heroImg: "https://images.unsplash.com/photo-1583001931096-959e9a1a6223?q=80&w=900&auto=format&fit=crop", services: [{ name: "Classic Lash Set", duration: "60 min", price: 45 }, { name: "Volume Lash Set", duration: "90 min", price: 65 }] },
-      ],
+      "Makeup": {
+        role: "Makeup Artist", icon: "💄", hours: HOURS_LATE,
+        places: [
+          { name: "Glow Up Beauty Studio", address: "12 Crescent Lane, Shoreditch", rating: "4.7", reviews: "168", distance: "1.2 km", services: [{ name: "Full Makeup", duration: "60 min", price: 65 }, { name: "Bridal Makeup", duration: "90 min", price: 120 }] },
+          { name: "Studio Sheen Makeup", address: "31 Velour St, Manhattan", rating: "4.8", reviews: "144", distance: "1.5 km", services: [{ name: "Everyday Glam", duration: "45 min", price: 50 }, { name: "Event Makeup", duration: "75 min", price: 90 }] },
+        ],
+      },
+      "Brows": {
+        role: "Brow Specialist", icon: "👁️", hours: HOURS_STANDARD,
+        places: [
+          { name: "Brow Bar Studio", address: "3 Fenwick St, Shoreditch", rating: "4.8", reviews: "142", distance: "1.0 km", services: [{ name: "Brow Shaping", duration: "20 min", price: 20 }, { name: "Brow Tint", duration: "15 min", price: 15 }] },
+          { name: "Arch & Co.", address: "9 Feather Ln, Brooklyn", rating: "4.7", reviews: "96", distance: "1.4 km", services: [{ name: "Brow Lamination", duration: "40 min", price: 35 }, { name: "Microblading", duration: "2 hr", price: 180 }] },
+        ],
+      },
+      "Lashes": {
+        role: "Lash Technician", icon: "👀", hours: HOURS_STANDARD,
+        places: [
+          { name: "Lash Lounge", address: "17 Velvet Rd, Shoreditch", rating: "4.9", reviews: "203", distance: "1.3 km", services: [{ name: "Classic Lash Set", duration: "60 min", price: 45 }, { name: "Volume Lash Set", duration: "90 min", price: 65 }] },
+          { name: "Flutter Lash Bar", address: "26 Silk Mews, Manhattan", rating: "4.6", reviews: "112", distance: "1.8 km", services: [{ name: "Hybrid Lash Set", duration: "75 min", price: 55 }, { name: "Lash Lift", duration: "45 min", price: 40 }] },
+        ],
+      },
     },
   },
   skin: {
     label: "Skin",
+    tile: "tile-skin",
     subcategories: {
-      "Facials": [
-        { name: "Skin Clinic Studio", address: "22 Bloom Street, Manhattan", rating: "4.8", reviews: "154", distance: "1.6 km", price: 55, heroImg: "https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?q=80&w=900&auto=format&fit=crop", services: [{ name: "Signature Facial", duration: "50 min", price: 55 }, { name: "Deep Cleanse Facial", duration: "60 min", price: 65 }] },
-      ],
-      "Waxing": [
-        { name: "Smooth Skin Waxing Co.", address: "10 Silk Ave, Brooklyn", rating: "4.6", reviews: "89", distance: "1.8 km", price: 25, heroImg: "https://images.unsplash.com/photo-1519415943484-9fa1873496d4?q=80&w=900&auto=format&fit=crop", services: [{ name: "Full Leg Wax", duration: "40 min", price: 35 }, { name: "Brow Wax", duration: "10 min", price: 12 }] },
-      ],
-      "Scrubs": [
-        { name: "Renew Body Scrub Bar", address: "5 Cedar Court, Queens", rating: "4.7", reviews: "71", distance: "2.1 km", price: 40, heroImg: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?q=80&w=900&auto=format&fit=crop", services: [{ name: "Body Scrub", duration: "35 min", price: 40 }, { name: "Salt Scrub & Wrap", duration: "50 min", price: 60 }] },
-      ],
-      "Spray Tan": [
-        { name: "Sunless Studio", address: "31 Bronze Ln, Manhattan", rating: "4.9", reviews: "118", distance: "1.3 km", price: 35, heroImg: "https://images.unsplash.com/photo-1600334129128-685c5582fd35?q=80&w=900&auto=format&fit=crop", services: [{ name: "Full Body Spray Tan", duration: "25 min", price: 35 }, { name: "Custom Airbrush Tan", duration: "35 min", price: 50 }] },
-      ],
+      "Facials": {
+        role: "Esthetician", icon: "🧖‍♀️", hours: HOURS_STANDARD,
+        places: [
+          { name: "Skin Clinic Studio", address: "22 Bloom Street, Manhattan", rating: "4.8", reviews: "154", distance: "1.6 km", services: [{ name: "Signature Facial", duration: "50 min", price: 55 }, { name: "Deep Cleanse Facial", duration: "60 min", price: 65 }] },
+          { name: "Radiance Skin Bar", address: "4 Dew Court, Brooklyn", rating: "4.7", reviews: "109", distance: "1.9 km", services: [{ name: "Hydrating Facial", duration: "45 min", price: 50 }, { name: "Anti-Aging Facial", duration: "60 min", price: 75 }] },
+        ],
+      },
+      "Waxing": {
+        role: "Waxing Specialist", icon: "🕯️", hours: HOURS_STANDARD,
+        places: [
+          { name: "Smooth Skin Waxing Co.", address: "10 Silk Ave, Brooklyn", rating: "4.6", reviews: "89", distance: "1.8 km", services: [{ name: "Full Leg Wax", duration: "40 min", price: 35 }, { name: "Brow Wax", duration: "10 min", price: 12 }] },
+          { name: "Bare Studio Waxing", address: "15 Satin St, Queens", rating: "4.7", reviews: "101", distance: "2.0 km", services: [{ name: "Full Body Wax", duration: "75 min", price: 85 }, { name: "Underarm Wax", duration: "15 min", price: 15 }] },
+        ],
+      },
+      "Scrubs": {
+        role: "Spa Therapist", icon: "🧴", hours: HOURS_STANDARD,
+        places: [
+          { name: "Renew Body Scrub Bar", address: "5 Cedar Court, Queens", rating: "4.7", reviews: "71", distance: "2.1 km", services: [{ name: "Body Scrub", duration: "35 min", price: 40 }, { name: "Salt Scrub & Wrap", duration: "50 min", price: 60 }] },
+          { name: "Pure Glow Spa", address: "40 Meadow Rd, Brooklyn", rating: "4.8", reviews: "94", distance: "2.3 km", services: [{ name: "Detox Scrub", duration: "40 min", price: 45 }, { name: "Coffee Scrub & Massage", duration: "55 min", price: 65 }] },
+        ],
+      },
+      "Spray Tan": {
+        role: "Tanning Specialist", icon: "☀️", hours: HOURS_LATE,
+        places: [
+          { name: "Sunless Studio", address: "31 Bronze Ln, Manhattan", rating: "4.9", reviews: "118", distance: "1.3 km", services: [{ name: "Full Body Spray Tan", duration: "25 min", price: 35 }, { name: "Custom Airbrush Tan", duration: "35 min", price: 50 }] },
+          { name: "Golden Glow Tanning", address: "12 Sunset Blvd, Queens", rating: "4.6", reviews: "67", distance: "1.7 km", services: [{ name: "Express Tan", duration: "15 min", price: 25 }, { name: "Gradual Tan Package", duration: "30 min", price: 40 }] },
+        ],
+      },
     },
   },
   nails: {
     label: "Nails",
+    tile: "tile-nails",
     subcategories: {
-      "Mani": [
-        { name: "Nail Artistry Hub", address: "8 Harbor View, Manhattan", rating: "4.8", reviews: "301", distance: "1.5 km", price: 28, heroImg: "https://images.unsplash.com/photo-1610992015732-2449b0dd2b8f?q=80&w=900&auto=format&fit=crop", services: [{ name: "Classic Manicure", duration: "40 min", price: 28 }, { name: "Gel Polish", duration: "45 min", price: 32 }] },
-      ],
-      "Pedi": [
-        { name: "Sole Care Studio", address: "19 Marina Walk, Brooklyn", rating: "4.7", reviews: "162", distance: "1.9 km", price: 38, heroImg: "https://images.unsplash.com/photo-1519014816548-bf5fe059798b?q=80&w=900&auto=format&fit=crop", services: [{ name: "Classic Pedicure", duration: "45 min", price: 38 }, { name: "Spa Pedicure", duration: "60 min", price: 50 }] },
-      ],
-      "Nail Art": [
-        { name: "Nail Art Design Co.", address: "27 Canvas St, Queens", rating: "4.9", reviews: "210", distance: "2.2 km", price: 40, heroImg: "https://images.unsplash.com/photo-1604654894610-df63bc536371?q=80&w=900&auto=format&fit=crop", services: [{ name: "Custom Nail Art", duration: "60 min", price: 40 }, { name: "3D Nail Design", duration: "75 min", price: 55 }] },
-      ],
+      "Mani": {
+        role: "Nail Technician", icon: "💅", hours: HOURS_STANDARD,
+        places: [
+          { name: "Nail Artistry Hub", address: "8 Harbor View, Manhattan", rating: "4.8", reviews: "301", distance: "1.5 km", services: [{ name: "Classic Manicure", duration: "40 min", price: 28 }, { name: "Gel Polish", duration: "45 min", price: 32 }] },
+          { name: "Polished Nail Bar", address: "20 Cherry St, Brooklyn", rating: "4.6", reviews: "133", distance: "1.7 km", services: [{ name: "Express Manicure", duration: "25 min", price: 20 }, { name: "Deluxe Manicure", duration: "55 min", price: 38 }] },
+        ],
+      },
+      "Pedi": {
+        role: "Nail Technician", icon: "🦶", hours: HOURS_STANDARD,
+        places: [
+          { name: "Sole Care Studio", address: "19 Marina Walk, Brooklyn", rating: "4.7", reviews: "162", distance: "1.9 km", services: [{ name: "Classic Pedicure", duration: "45 min", price: 38 }, { name: "Spa Pedicure", duration: "60 min", price: 50 }] },
+          { name: "Toes & Co.", address: "7 Boardwalk Ave, Queens", rating: "4.8", reviews: "140", distance: "2.0 km", services: [{ name: "Gel Pedicure", duration: "50 min", price: 45 }, { name: "Deluxe Foot Spa", duration: "70 min", price: 60 }] },
+        ],
+      },
+      "Nail Art": {
+        role: "Nail Artist", icon: "🎨", hours: HOURS_LATE,
+        places: [
+          { name: "Nail Art Design Co.", address: "27 Canvas St, Queens", rating: "4.9", reviews: "210", distance: "2.2 km", services: [{ name: "Custom Nail Art", duration: "60 min", price: 40 }, { name: "3D Nail Design", duration: "75 min", price: 55 }] },
+          { name: "Chrome & Charm Nails", address: "14 Glitter Row, Manhattan", rating: "4.7", reviews: "128", distance: "1.6 km", services: [{ name: "Chrome Nails", duration: "50 min", price: 42 }, { name: "Hand-Painted Set", duration: "70 min", price: 50 }] },
+        ],
+      },
     },
   },
   bodyart: {
     label: "Body Art",
+    tile: "tile-bodyart",
     subcategories: {
-      "Tattoo": [
-        { name: "Ink & Iron Tattoo Parlor", address: "40 Steel Row, Brooklyn", rating: "4.8", reviews: "245", distance: "2.5 km", price: 100, heroImg: "https://images.unsplash.com/photo-1590246814883-57c511e76523?q=80&w=900&auto=format&fit=crop", services: [{ name: "Small Tattoo", duration: "60 min", price: 100 }, { name: "Custom Sleeve Session", duration: "3 hr", price: 350 }] },
-      ],
-      "Henna": [
-        { name: "Henna Art Studio", address: "16 Spice Lane, Queens", rating: "4.9", reviews: "133", distance: "1.7 km", price: 30, heroImg: "https://images.unsplash.com/photo-1610171400429-fea427e2b7c7?q=80&w=900&auto=format&fit=crop", services: [{ name: "Bridal Henna", duration: "2 hr", price: 90 }, { name: "Simple Henna Design", duration: "30 min", price: 30 }] },
-      ],
-      "Piercing": [
-        { name: "Piercing Studio 8", address: "2 Needle St, Manhattan", rating: "4.7", reviews: "187", distance: "1.4 km", price: 35, heroImg: "https://images.unsplash.com/photo-1595535373192-167c4a6eaf3e?q=80&w=900&auto=format&fit=crop", services: [{ name: "Ear Piercing", duration: "15 min", price: 35 }, { name: "Nose Piercing", duration: "15 min", price: 40 }] },
-      ],
+      "Tattoo": {
+        role: "Tattoo Artist", icon: "🪡", hours: HOURS_LATE,
+        places: [
+          { name: "Ink & Iron Tattoo Parlor", address: "40 Steel Row, Brooklyn", rating: "4.8", reviews: "245", distance: "2.5 km", services: [{ name: "Small Tattoo", duration: "60 min", price: 100 }, { name: "Custom Sleeve Session", duration: "3 hr", price: 350 }] },
+          { name: "Black Anchor Tattoo Co.", address: "18 Dock St, Manhattan", rating: "4.9", reviews: "289", distance: "1.9 km", services: [{ name: "Fine Line Tattoo", duration: "90 min", price: 150 }, { name: "Cover-Up Session", duration: "2 hr", price: 220 }] },
+        ],
+      },
+      "Henna": {
+        role: "Henna Artist", icon: "🌿", hours: HOURS_STANDARD,
+        places: [
+          { name: "Henna Art Studio", address: "16 Spice Lane, Queens", rating: "4.9", reviews: "133", distance: "1.7 km", services: [{ name: "Bridal Henna", duration: "2 hr", price: 90 }, { name: "Simple Henna Design", duration: "30 min", price: 30 }] },
+          { name: "Mehndi House", address: "29 Saffron St, Brooklyn", rating: "4.7", reviews: "76", distance: "2.1 km", services: [{ name: "Full Hand Henna", duration: "1.5 hr", price: 60 }, { name: "Kids Henna", duration: "20 min", price: 15 }] },
+        ],
+      },
+      "Piercing": {
+        role: "Piercer", icon: "💍", hours: HOURS_STANDARD,
+        places: [
+          { name: "Piercing Studio 8", address: "2 Needle St, Manhattan", rating: "4.7", reviews: "187", distance: "1.4 km", services: [{ name: "Ear Piercing", duration: "15 min", price: 35 }, { name: "Nose Piercing", duration: "15 min", price: 40 }] },
+          { name: "Steel & Stone Piercing", address: "35 Anvil Rd, Queens", rating: "4.8", reviews: "159", distance: "1.8 km", services: [{ name: "Cartilage Piercing", duration: "15 min", price: 45 }, { name: "Belly Piercing", duration: "20 min", price: 50 }] },
+        ],
+      },
     },
   },
   wellness: {
     label: "Wellness",
+    tile: "tile-wellness",
     subcategories: {
-      "Massage": [
-        { name: "Serenity Massage Spa", address: "50 Calm Ave, Manhattan", rating: "4.9", reviews: "276", distance: "1.1 km", price: 70, heroImg: "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?q=80&w=900&auto=format&fit=crop", services: [{ name: "Swedish Massage", duration: "60 min", price: 70 }, { name: "Deep Tissue Massage", duration: "60 min", price: 85 }] },
-      ],
-      "Therapy": [
-        { name: "Wellness Therapy Center", address: "13 Balance Blvd, Brooklyn", rating: "4.8", reviews: "154", distance: "1.6 km", price: 80, heroImg: "https://images.unsplash.com/photo-1591343395902-9420ce256bf6?q=80&w=900&auto=format&fit=crop", services: [{ name: "Physical Therapy Session", duration: "45 min", price: 80 }, { name: "Reflexology", duration: "40 min", price: 60 }] },
-      ],
+      "Massage": {
+        role: "Massage Therapist", icon: "💆‍♀️", hours: HOURS_LATE,
+        places: [
+          { name: "Serenity Massage Spa", address: "50 Calm Ave, Manhattan", rating: "4.9", reviews: "276", distance: "1.1 km", services: [{ name: "Swedish Massage", duration: "60 min", price: 70 }, { name: "Deep Tissue Massage", duration: "60 min", price: 85 }] },
+          { name: "Tranquil Touch Spa", address: "21 Lotus Ln, Brooklyn", rating: "4.8", reviews: "198", distance: "1.5 km", services: [{ name: "Hot Stone Massage", duration: "75 min", price: 95 }, { name: "Sports Massage", duration: "50 min", price: 75 }] },
+        ],
+      },
+      "Therapy": {
+        role: "Therapist", icon: "🧘", hours: HOURS_WEEKDAYS_ONLY,
+        places: [
+          { name: "Wellness Therapy Center", address: "13 Balance Blvd, Brooklyn", rating: "4.8", reviews: "154", distance: "1.6 km", services: [{ name: "Physical Therapy Session", duration: "45 min", price: 80 }, { name: "Reflexology", duration: "40 min", price: 60 }] },
+          { name: "Mindful Body Clinic", address: "8 Harmony St, Queens", rating: "4.7", reviews: "121", distance: "2.0 km", services: [{ name: "Rehab Therapy Session", duration: "50 min", price: 85 }, { name: "Acupuncture", duration: "45 min", price: 70 }] },
+        ],
+      },
     },
   },
+};
+
+// Decorate every place with role, icon, tile class, description, and timetable
+// (computed once from its subcategory, so the data above stays lean)
+Object.entries(CATEGORY_DATA).forEach(([catKey, category]) => {
+  Object.entries(category.subcategories).forEach(([subName, sub]) => {
+    sub.places.forEach((place) => {
+      place.role = sub.role;
+      place.icon = sub.icon;
+      place.tileClass = category.tile;
+      place.subName = subName;
+      place.categoryLabel = category.label;
+      place.hours = sub.hours;
+      const startingPrice = Math.min(...place.services.map((s) => s.price));
+      place.price = startingPrice;
+      place.description = `${place.name} is a ${place.rating}★ rated ${sub.role.toLowerCase()} specializing in ${subName.toLowerCase()}, trusted by ${place.reviews} clients near ${place.address.split(",")[1] ? place.address.split(",")[1].trim() : "you"}. Known for consistent, high-quality ${subName.toLowerCase()} services in a relaxed, professional setting.`;
+    });
+  });
+});
+
+// Base "All view" providers (Best Providers / Featured / Special Offers on the home screen)
+const PROVIDERS = {
+  razor: CATEGORY_DATA.hair.subcategories["Barber"].places[0],
+  glow: CATEGORY_DATA.face.subcategories["Makeup"].places[0],
+  nails: CATEGORY_DATA.nails.subcategories["Mani"].places[0],
 };
 
 const homeScreen = document.getElementById("home-screen");
@@ -1090,38 +1292,78 @@ const detailScreen = document.getElementById("detail-screen");
 const backBtn = document.getElementById("back-btn");
 const allView = document.getElementById("all-view");
 const categoryView = document.getElementById("category-view");
+const tabContent = document.getElementById("tab-content");
 
 let currentProviderData = null;
+let currentTab = "services";
 
-function renderDetail(data) {
-  currentProviderData = data;
-
-  document.getElementById("detail-hero-img").src = data.heroImg;
-  document.getElementById("detail-name").textContent = data.name;
-  document.getElementById("detail-address").textContent = data.address;
-  document.getElementById("detail-rating").textContent = data.rating;
-  document.getElementById("detail-reviews").textContent = data.reviews;
-  document.getElementById("detail-distance").textContent = data.distance;
-  document.getElementById("detail-price").textContent = data.services[0].price;
-
-  const list = document.getElementById("services-list");
-  list.innerHTML = "";
-  data.services.forEach((s) => {
-    const row = document.createElement("div");
-    row.className = "service-row";
-    row.innerHTML = `
+function servicesPanelHTML(data) {
+  return data.services.map((s) => `
+    <div class="service-row">
       <div>
         <div class="service-name">${s.name}</div>
         <div class="service-duration">${s.duration}</div>
       </div>
       <div class="service-price">$${s.price}</div>
-    `;
-    list.appendChild(row);
-  });
+    </div>
+  `).join("");
+}
 
-  // reset tabs to "Services"
+function descriptionPanelHTML(data) {
+  return `
+    <div class="description-panel">
+      <h4>About this ${data.role}</h4>
+      <p>${data.description}</p>
+    </div>
+  `;
+}
+
+function timetablePanelHTML(data) {
+  const rows = data.hours.map(([day, hrs]) => `
+    <div class="timetable-row ${hrs === "Closed" ? "closed" : ""}">
+      <span class="timetable-day">${day}</span>
+      <span class="timetable-hours">${hrs}</span>
+    </div>
+  `).join("");
+  return `
+    <div class="timetable-panel">
+      ${rows}
+      <div class="timetable-note">Weekly availability · updated monthly by the provider</div>
+    </div>
+  `;
+}
+
+function reviewsPanelHTML() {
+  return `<div style="color:var(--text-faint); text-align:center; padding:30px 0;">Reviews coming soon.</div>`;
+}
+
+function renderTab(tabName) {
+  currentTab = tabName;
+  if (!currentProviderData) return;
+  if (tabName === "services") tabContent.innerHTML = servicesPanelHTML(currentProviderData);
+  else if (tabName === "description") tabContent.innerHTML = descriptionPanelHTML(currentProviderData);
+  else if (tabName === "timetable") tabContent.innerHTML = timetablePanelHTML(currentProviderData);
+  else if (tabName === "reviews") tabContent.innerHTML = reviewsPanelHTML();
+}
+
+function renderDetail(data) {
+  currentProviderData = data;
+
+  const heroTile = document.getElementById("detail-hero-tile");
+  heroTile.className = `tile ${data.tileClass}`;
+  document.getElementById("detail-hero-icon").textContent = data.icon;
+  document.getElementById("detail-role").textContent = data.role;
+
+  document.getElementById("detail-name").textContent = data.name;
+  document.getElementById("detail-address").textContent = data.address;
+  document.getElementById("detail-rating").textContent = data.rating;
+  document.getElementById("detail-reviews").textContent = data.reviews;
+  document.getElementById("detail-distance").textContent = data.distance;
+  document.getElementById("detail-price").textContent = data.price;
+
   document.querySelectorAll(".tab").forEach((t) => t.classList.remove("active"));
   document.querySelector('.tab[data-tab="services"]').classList.add("active");
+  renderTab("services");
 
   homeScreen.classList.remove("active");
   detailScreen.classList.add("active");
@@ -1145,17 +1387,11 @@ document.querySelectorAll("[data-provider]").forEach((el) => {
 
 backBtn.addEventListener("click", goHome);
 
-// Tabs on detail screen (Services / Reviews) — Reviews is a stub for now
 document.querySelectorAll(".tab").forEach((tab) => {
   tab.addEventListener("click", () => {
     document.querySelectorAll(".tab").forEach((t) => t.classList.remove("active"));
     tab.classList.add("active");
-    const list = document.getElementById("services-list");
-    if (tab.dataset.tab === "reviews") {
-      list.innerHTML = `<div style="color:var(--text-faint); text-align:center; padding:30px 0;">Reviews coming soon.</div>`;
-    } else if (currentProviderData) {
-      renderDetail(currentProviderData);
-    }
+    renderTab(tab.dataset.tab);
   });
 });
 
@@ -1166,7 +1402,7 @@ function buildSubcatCard(place) {
   card.className = "subcat-card";
   card.innerHTML = `
     <div class="subcat-img-wrap">
-      <img src="${place.heroImg}" alt="${place.name}" />
+      <div class="tile ${place.tileClass}"><span class="tile-icon">${place.icon}</span></div>
       <span class="rating-chip">★ ${place.rating}</span>
     </div>
     <div class="subcat-name">${place.name}</div>
@@ -1194,21 +1430,21 @@ function renderCategory(categoryKey) {
     return;
   }
 
-  Object.entries(category.subcategories).forEach(([subName, places]) => {
+  Object.entries(category.subcategories).forEach(([subName, sub]) => {
     const section = document.createElement("section");
     section.className = "subcat-section";
 
     const head = document.createElement("div");
     head.className = "subcat-head";
     head.innerHTML = `
-      <span class="subcat-tab">${subName}</span>
-      <span class="subcat-count">${places.length} ${places.length === 1 ? "place" : "places"}</span>
+      <span class="subcat-tab">${sub.icon} ${subName}</span>
+      <span class="subcat-count">${sub.places.length} ${sub.places.length === 1 ? "place" : "places"}</span>
     `;
     section.appendChild(head);
 
     const scroll = document.createElement("div");
     scroll.className = "subcat-scroll";
-    places.forEach((place) => scroll.appendChild(buildSubcatCard(place)));
+    sub.places.forEach((place) => scroll.appendChild(buildSubcatCard(place)));
     section.appendChild(scroll);
 
     categoryView.appendChild(section);

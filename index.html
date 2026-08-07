@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<title>GlowUp — Book Local Services</title>
+<style>
+/* ==========================================================
+   GlowUp — dark / gold booking app theme
+   ========================================================== */
+
+:root {
+  --bg: #0e0e0e;
+  --surface: #1a1a1a;
+  --surface-2: #232323;
+  --surface-3: #2b2b2b;
+  --gold: #f5b400;
+  --gold-dark: #d99e00;
+  --text: #ffffff;
+  --text-dim: #a8a8a8;
+  --text-faint: #7a7a7a;
+  --radius-lg: 22px;
+  --radius-md: 16px;
+  --radius-sm: 12px;
+  --radius-pill: 999px;
+  font-size: 16px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #000;
+  color: var(--text);
+  font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: inherit;
+}
+
+a { color: inherit; text-decoration: none; }
+
+img { display: block; max-width: 100%; }
+
+/* Phone frame — centers app on desktop, full width on mobile */
+.phone {
+  max-width: 430px;
+  min-height: 100vh;
+  margin: 0 auto;
+  background: var(--bg);
+  position: relative;
+  overflow-x: hidden;
+}
+
+.screen {
+  display: none;
+  padding: 20px 20px 0;
+  animation: fadeIn 0.25s ease;
+}
+.screen.active { display: block; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- Top bar ---------- */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--gold);
+}
+
+.location-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.8rem;
+  color: var(--gold);
+  font-weight: 600;
+}
+
+.chevron { color: var(--gold); font-size: 0.7rem; }
+
+.welcome {
+  font-size: 1rem;
+  color: var(--text-dim);
+  margin-top: 2px;
+}
+.welcome strong { color: var(--text); }
+
+.bell-btn {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+}
+
+.bell-btn .dot {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 8px;
+  height: 8px;
+  background: var(--gold);
+  border-radius: 50%;
+  border: 2px solid var(--surface-2);
+}
+
+/* ---------- Search ---------- */
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--surface-2);
+  border-radius: var(--radius-pill);
+  padding: 14px 18px;
+  margin-bottom: 18px;
+}
+
+.search-icon { opacity: 0.6; }
+
+.search-bar input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--text);
+  font-size: 0.95rem;
+}
+.search-bar input::placeholder { color: var(--text-faint); }
+
+/* ---------- Promo banner ---------- */
+.promo-banner {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--surface-2);
+  display: flex;
+  align-items: stretch;
+  min-height: 190px;
+  margin-bottom: 26px;
+}
+
+.promo-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  mask-image: linear-gradient(to right, transparent 0%, transparent 38%, black 62%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, transparent 38%, black 62%);
+}
+
+.promo-banner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, rgba(20,20,20,0.96) 40%, rgba(20,20,20,0.15) 100%);
+  pointer-events: none;
+}
+
+.promo-text {
+  position: relative;
+  z-index: 1;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+  max-width: 65%;
+}
+
+.promo-badge {
+  display: inline-block;
+  background: rgba(245, 180, 0, 0.18);
+  color: var(--gold);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  width: fit-content;
+}
+
+.promo-text h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  line-height: 1.2;
+  font-weight: 800;
+}
+
+.btn-primary {
+  background: var(--gold);
+  color: #171200;
+  font-weight: 700;
+  border-radius: var(--radius-pill);
+  padding: 12px 20px;
+  font-size: 0.9rem;
+  width: fit-content;
+  box-shadow: 0 6px 18px rgba(245, 180, 0, 0.25);
+}
+.btn-primary:active { background: var(--gold-dark); }
+.btn-small { padding: 10px 18px; font-size: 0.85rem; }
+
+/* ---------- Sections ---------- */
+.section { margin-bottom: 26px; }
+
+.section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.section-head h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.see-all {
+  color: var(--gold);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+/* ---------- Categories ---------- */
+.category-row {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: none;
+}
+.category-row::-webkit-scrollbar { display: none; }
+
+.category-pill {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 76px;
+  padding: 16px 8px;
+  border-radius: var(--radius-md);
+  background: var(--surface-2);
+  color: var(--text-dim);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.category-pill.active {
+  background: var(--gold);
+  color: #171200;
+}
+
+.cat-icon { font-size: 1.3rem; }
+
+/* ---------- Best Providers (horizontal image cards) ---------- */
+.provider-scroll {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.provider-scroll::-webkit-scrollbar { display: none; }
+
+.provider-card {
+  flex: 0 0 auto;
+  width: 62%;
+  min-width: 210px;
+}
+
+.provider-img-wrap {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  height: 150px;
+}
+
+.provider-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.rating-chip {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: var(--gold);
+  color: #171200;
+  font-weight: 700;
+  font-size: 0.78rem;
+  padding: 5px 10px;
+  border-radius: var(--radius-pill);
+}
+
+.bookmark {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(0,0,0,0.55);
+  width: 30px;
+  height: 30px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+}
+
+/* ---------- Featured providers (large overlay cards) ---------- */
+.featured-scroll {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.featured-scroll::-webkit-scrollbar { display: none; }
+
+.featured-card {
+  position: relative;
+  flex: 0 0 auto;
+  width: 78%;
+  min-width: 250px;
+  height: 190px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.featured-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.featured-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 14px;
+  background: linear-gradient(to top, rgba(0,0,0,0.85) 10%, transparent 60%);
+}
+
+.featured-name {
+  font-weight: 800;
+  font-size: 1.05rem;
+}
+.featured-loc {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  margin-top: 4px;
+}
+
+.arrow-btn {
+  flex: 0 0 auto;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-sm);
+  background: var(--gold);
+  color: #171200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+.arrow-btn.small { width: 28px; height: 28px; font-size: 0.85rem; }
+
+/* ---------- Special offers ---------- */
+.offers-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.offer-card {
+  background: var(--surface-2);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  text-align: left;
+}
+
+.offer-img-wrap {
+  position: relative;
+  height: 110px;
+}
+.offer-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.offer-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: var(--gold);
+  color: #171200;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 5px 9px;
+  border-radius: var(--radius-pill);
+}
+
+.offer-body {
+  padding: 10px 12px 14px;
+  position: relative;
+}
+
+.offer-name { font-weight: 700; font-size: 0.9rem; }
+.offer-sub { font-size: 0.72rem; color: var(--text-faint); margin-top: 2px; }
+
+.offer-body .arrow-btn {
+  position: absolute;
+  right: 10px;
+  bottom: 12px;
+}
+
+.bottom-spacer { height: 30px; }
+
+/* ============ DETAIL SCREEN ============ */
+#detail-screen { padding: 0 0 100px 0; }
+
+.detail-hero {
+  position: relative;
+  height: 260px;
+}
+.detail-hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.back-btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+}
+
+.status-chip {
+  position: absolute;
+  top: 22px;
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+.status-chip.available {
+  left: 72px;
+  background: #1fae5c;
+  color: #fff;
+}
+.status-chip.role {
+  right: 20px;
+  background: var(--gold);
+  color: #171200;
+}
+
+.detail-body { padding: 20px; }
+
+.detail-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.detail-title-row h2 {
+  margin: 0 0 6px;
+  font-size: 1.35rem;
+  font-weight: 800;
+}
+
+.detail-loc {
+  color: var(--text-dim);
+  font-size: 0.85rem;
+}
+
+.rating-box {
+  background: var(--surface-2);
+  border: 1px solid rgba(245,180,0,0.3);
+  border-radius: var(--radius-md);
+  padding: 8px 14px;
+  text-align: center;
+  flex: 0 0 auto;
+}
+.rating-star { color: var(--gold); font-weight: 800; }
+.rating-count { font-size: 0.68rem; color: var(--text-faint); margin-top: 2px; }
+
+.distance-chip {
+  display: inline-block;
+  margin-top: 14px;
+  background: var(--surface-2);
+  color: var(--text-dim);
+  font-size: 0.78rem;
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+}
+
+.tab-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 22px;
+  background: var(--surface-2);
+  border-radius: var(--radius-pill);
+  padding: 6px;
+}
+
+.tab {
+  flex: 1;
+  text-align: center;
+  padding: 12px 0;
+  border-radius: var(--radius-pill);
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--text-dim);
+}
+.tab.active {
+  background: var(--gold);
+  color: #171200;
+}
+
+.services-list {
+  margin-top: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.service-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--surface-2);
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+}
+
+.service-name { font-weight: 700; font-size: 0.98rem; }
+.service-duration { color: var(--text-faint); font-size: 0.78rem; margin-top: 3px; }
+.service-price { color: var(--gold); font-weight: 800; font-size: 1rem; }
+
+.book-bar {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 430px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px 22px;
+  background: linear-gradient(to top, var(--bg) 70%, transparent);
+}
+
+.starting-label { font-size: 0.72rem; color: var(--text-faint); }
+.starting-price { font-size: 1.3rem; font-weight: 800; color: var(--text); }
+
+.book-btn { padding: 14px 34px; font-size: 0.95rem; }
+
+/* ---------- Responsive ---------- */
+@media (min-width: 431px) {
+  .phone {
+    margin-top: 24px;
+    margin-bottom: 24px;
+    border-radius: 36px;
+    border: 8px solid #1c1c1c;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    min-height: auto;
+  }
+  .book-bar { border-radius: 0 0 28px 28px; }
+}
+
+</style>
+</head>
+<body>
+
+  <div class="phone">
+
+    <!-- ============ HOME SCREEN ============ -->
+    <main id="home-screen" class="screen active">
+
+      <!-- Header -->
+      <header class="topbar">
+        <div class="user-info">
+          <img class="avatar" src="https://i.pravatar.cc/80?img=47" alt="User avatar" />
+          <div class="user-text">
+            <div class="location-row">
+              <span class="pin">📍</span>
+              <span class="location">New York, USA</span>
+              <span class="chevron">⌄</span>
+            </div>
+            <div class="welcome">Welcome back, <strong>Koluy</strong></div>
+          </div>
+        </div>
+        <button class="bell-btn" aria-label="Notifications">
+          🔔
+          <span class="dot"></span>
+        </button>
+      </header>
+
+      <!-- Search -->
+      <div class="search-bar">
+        <span class="search-icon">🔍</span>
+        <input type="text" placeholder="Search services or providers..." aria-label="Search services or providers" />
+      </div>
+
+      <!-- Promo Banner -->
+      <section class="promo-banner">
+        <div class="promo-text">
+          <span class="promo-badge">Haircut Special</span>
+          <h2>20% Off<br />Your First Cut</h2>
+          <button class="btn-primary btn-small">Get Offer Now</button>
+        </div>
+        <img class="promo-img" src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?q=80&w=600&auto=format&fit=crop" alt="Barber cutting hair" />
+      </section>
+
+      <!-- Top Categories -->
+      <section class="section">
+        <div class="section-head">
+          <h3>Top Categories</h3>
+          <a href="#" class="see-all">See All</a>
+        </div>
+        <div class="category-row">
+          <button class="category-pill active">
+            <span class="cat-icon">▦</span>
+            <span>All</span>
+          </button>
+          <button class="category-pill">
+            <span class="cat-icon">✂️</span>
+            <span>Haircut</span>
+          </button>
+          <button class="category-pill">
+            <span class="cat-icon">🧔</span>
+            <span>Beard Cut</span>
+          </button>
+          <button class="category-pill">
+            <span class="cat-icon">🛏️</span>
+            <span>Shaves</span>
+          </button>
+          <button class="category-pill">
+            <span class="cat-icon">💅</span>
+            <span>Manicure</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Best Providers -->
+      <section class="section">
+        <div class="section-head">
+          <h3>Best Providers</h3>
+          <a href="#" class="see-all">See All</a>
+        </div>
+        <div class="provider-scroll">
+          <button class="provider-card" data-provider="razor">
+            <div class="provider-img-wrap">
+              <img src="https://images.unsplash.com/photo-1585747860715-2ba37e788b70?q=80&w=600&auto=format&fit=crop" alt="Razor & Co. Barbershop" />
+              <span class="rating-chip">★ 4.9</span>
+              <span class="bookmark">🔖</span>
+            </div>
+          </button>
+          <button class="provider-card" data-provider="glow">
+            <div class="provider-img-wrap">
+              <img src="https://images.unsplash.com/photo-1522337660859-02fbefca4702?q=80&w=600&auto=format&fit=crop" alt="Glow Up Beauty Studio" />
+              <span class="rating-chip">★ 4.7</span>
+            </div>
+          </button>
+        </div>
+      </section>
+
+      <!-- Featured Providers -->
+      <section class="section">
+        <div class="featured-scroll">
+          <button class="featured-card" data-provider="razor">
+            <img src="https://images.unsplash.com/photo-1585747860715-2ba37e788b70?q=80&w=600&auto=format&fit=crop" alt="Razor & Co. Barbershop" />
+            <div class="featured-overlay">
+              <div class="featured-text">
+                <div class="featured-name">Razor &amp; Co. Barber...</div>
+                <div class="featured-loc">📍 5 Albert Road, Barnoldsw...</div>
+              </div>
+              <span class="arrow-btn">→</span>
+            </div>
+          </button>
+          <button class="featured-card" data-provider="glow">
+            <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?q=80&w=600&auto=format&fit=crop" alt="Glow Up Beauty Studio" />
+            <div class="featured-overlay">
+              <div class="featured-text">
+                <div class="featured-name">Glow Up Beauty St...</div>
+                <div class="featured-loc">📍 12 Crescent Lane, Shor...</div>
+              </div>
+              <span class="arrow-btn">→</span>
+            </div>
+          </button>
+        </div>
+      </section>
+
+      <!-- Special Offers -->
+      <section class="section">
+        <div class="section-head">
+          <h3>Special Offers</h3>
+          <a href="#" class="see-all">See All</a>
+        </div>
+        <div class="offers-grid">
+          <button class="offer-card" data-provider="razor">
+            <div class="offer-img-wrap">
+              <img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?q=80&w=600&auto=format&fit=crop" alt="Razor Work Fred" />
+              <span class="offer-badge">20% Off Haircut</span>
+            </div>
+            <div class="offer-body">
+              <div class="offer-name">Razor Work Fred</div>
+              <div class="offer-sub">Quality, Trusted Services</div>
+              <span class="arrow-btn small">→</span>
+            </div>
+          </button>
+          <button class="offer-card" data-provider="nails">
+            <div class="offer-img-wrap">
+              <img src="https://images.unsplash.com/photo-1610992015732-2449b0dd2b8f?q=80&w=600&auto=format&fit=crop" alt="Nail Artistry Hub" />
+              <span class="offer-badge">15% Off Manicure</span>
+            </div>
+            <div class="offer-body">
+              <div class="offer-name">Nail Artistry Hub</div>
+              <div class="offer-sub">Premium Nail Services</div>
+              <span class="arrow-btn small">→</span>
+            </div>
+          </button>
+        </div>
+      </section>
+
+      <div class="bottom-spacer"></div>
+    </main>
+
+    <!-- ============ PROVIDER DETAIL SCREEN ============ -->
+    <main id="detail-screen" class="screen">
+
+      <div class="detail-hero">
+        <img id="detail-hero-img" src="https://images.unsplash.com/photo-1585747860715-2ba37e788b70?q=80&w=900&auto=format&fit=crop" alt="Provider" />
+        <button class="back-btn" id="back-btn" aria-label="Back">←</button>
+        <span class="status-chip available">● Available</span>
+        <span class="status-chip role">Barber</span>
+      </div>
+
+      <div class="detail-body">
+        <div class="detail-title-row">
+          <div>
+            <h2 id="detail-name">Razor &amp; Co. Barbershop</h2>
+            <div class="detail-loc">📍 <span id="detail-address">5 Albert Road, Barnoldswick</span></div>
+          </div>
+          <div class="rating-box">
+            <div class="rating-star">★ <span id="detail-rating">4.9</span></div>
+            <div class="rating-count"><span id="detail-reviews">214</span> reviews</div>
+          </div>
+        </div>
+
+        <div class="distance-chip"><span id="detail-distance">0.8 km</span></div>
+
+        <div class="tab-row">
+          <button class="tab active" data-tab="services">Services</button>
+          <button class="tab" data-tab="reviews">Reviews</button>
+        </div>
+
+        <div id="services-list" class="services-list"><!-- injected --></div>
+      </div>
+
+      <div class="book-bar">
+        <div>
+          <div class="starting-label">Starting from</div>
+          <div class="starting-price">$<span id="detail-price">35</span></div>
+        </div>
+        <button class="btn-primary book-btn">Book Now</button>
+      </div>
+    </main>
+
+  </div>
+
+<script>
+// ==========================================================
+// GlowUp — provider data + screen navigation
+// ==========================================================
+
+const PROVIDERS = {
+  razor: {
+    name: "Razor & Co. Barbershop",
+    address: "5 Albert Road, Barnoldswick",
+    rating: "4.9",
+    reviews: "214",
+    distance: "0.8 km",
+    heroImg: "https://images.unsplash.com/photo-1585747860715-2ba37e788b70?q=80&w=900&auto=format&fit=crop",
+    services: [
+      { name: "Classic Haircut", duration: "45 min", price: 35 },
+      { name: "Fade & Taper", duration: "60 min", price: 45 },
+      { name: "Beard Trim", duration: "30 min", price: 25 },
+      { name: "Hot Towel Shave", duration: "30 min", price: 30 },
+    ],
+  },
+  glow: {
+    name: "Glow Up Beauty Studio",
+    address: "12 Crescent Lane, Shoreditch",
+    rating: "4.7",
+    reviews: "168",
+    distance: "1.2 km",
+    heroImg: "https://images.unsplash.com/photo-1560066984-138dadb4c035?q=80&w=900&auto=format&fit=crop",
+    services: [
+      { name: "Signature Facial", duration: "50 min", price: 55 },
+      { name: "Brow Shaping", duration: "20 min", price: 20 },
+      { name: "Full Makeup", duration: "60 min", price: 65 },
+    ],
+  },
+  nails: {
+    name: "Nail Artistry Hub",
+    address: "8 Harbor View, Manhattan",
+    rating: "4.8",
+    reviews: "301",
+    distance: "1.5 km",
+    heroImg: "https://images.unsplash.com/photo-1610992015732-2449b0dd2b8f?q=80&w=900&auto=format&fit=crop",
+    services: [
+      { name: "Classic Manicure", duration: "40 min", price: 28 },
+      { name: "Gel Polish", duration: "45 min", price: 32 },
+      { name: "Pedicure", duration: "50 min", price: 38 },
+    ],
+  },
+};
+
+const homeScreen = document.getElementById("home-screen");
+const detailScreen = document.getElementById("detail-screen");
+const backBtn = document.getElementById("back-btn");
+
+function openProvider(id) {
+  const data = PROVIDERS[id];
+  if (!data) return;
+
+  document.getElementById("detail-hero-img").src = data.heroImg;
+  document.getElementById("detail-name").textContent = data.name;
+  document.getElementById("detail-address").textContent = data.address;
+  document.getElementById("detail-rating").textContent = data.rating;
+  document.getElementById("detail-reviews").textContent = data.reviews;
+  document.getElementById("detail-distance").textContent = data.distance;
+  document.getElementById("detail-price").textContent = data.services[0].price;
+
+  const list = document.getElementById("services-list");
+  list.innerHTML = "";
+  data.services.forEach((s) => {
+    const row = document.createElement("div");
+    row.className = "service-row";
+    row.innerHTML = `
+      <div>
+        <div class="service-name">${s.name}</div>
+        <div class="service-duration">${s.duration}</div>
+      </div>
+      <div class="service-price">$${s.price}</div>
+    `;
+    list.appendChild(row);
+  });
+
+  homeScreen.classList.remove("active");
+  detailScreen.classList.add("active");
+  window.scrollTo({ top: 0, behavior: "instant" });
+}
+
+function goHome() {
+  detailScreen.classList.remove("active");
+  homeScreen.classList.add("active");
+  window.scrollTo({ top: 0, behavior: "instant" });
+}
+
+document.querySelectorAll("[data-provider]").forEach((el) => {
+  el.addEventListener("click", () => openProvider(el.dataset.provider));
+});
+
+backBtn.addEventListener("click", goHome);
+
+// Tabs on detail screen (Services / Reviews) — Reviews is a stub for now
+document.querySelectorAll(".tab").forEach((tab) => {
+  tab.addEventListener("click", () => {
+    document.querySelectorAll(".tab").forEach((t) => t.classList.remove("active"));
+    tab.classList.add("active");
+    const list = document.getElementById("services-list");
+    if (tab.dataset.tab === "reviews") {
+      list.innerHTML = `<div style="color:var(--text-faint); text-align:center; padding:30px 0;">Reviews coming soon.</div>`;
+    } else {
+      // re-render services for the current provider by re-reading the name
+      const name = document.getElementById("detail-name").textContent;
+      const id = Object.keys(PROVIDERS).find((k) => PROVIDERS[k].name === name);
+      if (id) openProvider(id);
+    }
+  });
+});
+
+// Category pill selection state
+document.querySelectorAll(".category-pill").forEach((pill) => {
+  pill.addEventListener("click", () => {
+    document.querySelectorAll(".category-pill").forEach((p) => p.classList.remove("active"));
+    pill.classList.add("active");
+  });
+});
+
+</script>
+</body>
+</html>

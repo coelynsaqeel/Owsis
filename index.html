@@ -20,8 +20,8 @@
   --text-dim: #a8a8a8;
   --text-faint: #7a7a7a;
   --radius-lg: 22px;
-  --radius-md: 16px;
-  --radius-sm: 12px;
+  --radius-md: 18px;
+  --radius-sm: 13px;
   --radius-pill: 999px;
   font-size: 16px;
 }
@@ -35,7 +35,10 @@ html, body {
   color: var(--text);
   font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
+html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; width: 0; height: 0; }
 
 button {
   font-family: inherit;
@@ -57,7 +60,10 @@ img { display: block; max-width: 100%; }
   background: var(--bg);
   position: relative;
   overflow-x: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
+.phone::-webkit-scrollbar { display: none; width: 0; height: 0; }
 
 .screen {
   display: none;
@@ -220,11 +226,10 @@ img { display: block; max-width: 100%; }
   background: var(--gold);
   color: #171200;
   font-weight: 700;
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-sm);
   padding: 11px 18px;
   font-size: 0.85rem;
   width: fit-content;
-  box-shadow: 0 6px 18px rgba(245, 180, 0, 0.25);
 }
 .btn-primary:active { background: var(--gold-dark); }
 .btn-small { padding: 9px 16px; font-size: 0.8rem; }
@@ -338,42 +343,6 @@ img { display: block; max-width: 100%; }
 }
 .subcat-scroll::-webkit-scrollbar { display: none; }
 
-.subcat-card {
-  flex: 0 0 auto;
-  width: 128px;
-  text-align: left;
-}
-
-.subcat-img-wrap {
-  position: relative;
-  border-radius: var(--radius-sm);
-  overflow: hidden;
-  height: 108px;
-}
-.subcat-img-wrap img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.subcat-card .rating-chip {
-  padding: 3px 7px;
-  font-size: 0.64rem;
-}
-
-.subcat-name {
-  font-size: 0.78rem;
-  font-weight: 700;
-  margin-top: 7px;
-  line-height: 1.25;
-}
-.subcat-price {
-  font-size: 0.7rem;
-  color: var(--gold);
-  font-weight: 700;
-  margin-top: 2px;
-}
-
 .category-empty {
   text-align: center;
   color: var(--text-faint);
@@ -393,13 +362,6 @@ img { display: block; max-width: 100%; }
   position: relative;
   overflow: hidden;
 }
-.tile::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(0,0,0,0.35), transparent 45%);
-  pointer-events: none;
-}
 
 .tile-photo {
   position: absolute;
@@ -416,13 +378,11 @@ img { display: block; max-width: 100%; }
   left: 8px;
   width: 26px;
   height: 26px;
-  border-radius: 50%;
-  background: rgba(0,0,0,0.6);
-  backdrop-filter: blur(2px);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.85rem;
+  font-size: 0.95rem;
+  filter: drop-shadow(0 1px 3px rgba(0,0,0,0.9)) drop-shadow(0 2px 8px rgba(0,0,0,0.7));
   z-index: 2;
   line-height: 1;
 }
@@ -495,28 +455,63 @@ img { display: block; max-width: 100%; }
   font-size: 1rem;
 }
 
-.timetable-panel {
+/* ---------- Reviews ---------- */
+.reviews-summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   margin-top: 18px;
+  margin-bottom: 14px;
   background: var(--surface-2);
   border-radius: var(--radius-md);
-  overflow: hidden;
+  padding: 14px 16px;
 }
-.timetable-row {
-  display: flex;
-  justify-content: space-between;
-  padding: 13px 18px;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
-  font-size: 0.9rem;
+.reviews-summary-score {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--gold);
 }
-.timetable-row:last-child { border-bottom: none; }
-.timetable-day { font-weight: 700; color: var(--text); }
-.timetable-hours { color: var(--text-dim); }
-.timetable-row.closed .timetable-hours { color: var(--text-faint); }
-.timetable-note {
-  padding: 12px 18px;
+.reviews-summary-text {
   font-size: 0.76rem;
   color: var(--text-faint);
-  background: rgba(245,180,0,0.06);
+  line-height: 1.4;
+}
+
+.reviews-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.review-card {
+  background: var(--surface-2);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+}
+.review-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.review-name {
+  font-weight: 700;
+  font-size: 0.86rem;
+}
+.review-stars {
+  color: var(--gold);
+  font-size: 0.78rem;
+  letter-spacing: 1px;
+}
+.review-date {
+  font-size: 0.68rem;
+  color: var(--text-faint);
+  margin-top: 2px;
+}
+.review-comment {
+  font-size: 0.84rem;
+  color: var(--text-dim);
+  line-height: 1.5;
+  margin: 8px 0 0;
 }
 
 /* ============ PROFILE SCREEN ============ */
@@ -624,50 +619,161 @@ img { display: block; max-width: 100%; }
 .stat-value { font-size: 1.2rem; font-weight: 800; color: var(--gold); }
 .stat-label { font-size: 0.68rem; color: var(--text-faint); margin-top: 4px; line-height: 1.3; }
 
-/* ---------- Best Providers (large overlay cards) ---------- */
+/* ---------- Wallet (provider mode) ---------- */
+.wallet-card {
+  background: var(--surface-2);
+  border-radius: var(--radius-md);
+  padding: 18px;
+  text-align: center;
+}
+.wallet-balance-label { font-size: 0.74rem; color: var(--text-faint); }
+.wallet-balance { font-size: 1.9rem; font-weight: 800; color: var(--gold); margin-top: 4px; }
+.wallet-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+.wallet-actions .btn-primary { flex: 1; width: auto; }
+.wallet-btn-secondary {
+  flex: 1;
+  background: var(--surface-3);
+  color: var(--text);
+  font-weight: 700;
+  font-size: 0.85rem;
+  border-radius: var(--radius-sm);
+  padding: 11px 14px;
+}
+.wallet-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 10px;
+}
+.wallet-stat {
+  background: var(--surface-2);
+  border-radius: var(--radius-md);
+  padding: 12px 10px;
+  text-align: center;
+}
+.wallet-stat-value { display: block; font-size: 1rem; font-weight: 800; color: var(--text); }
+.wallet-stat-label { display: block; font-size: 0.66rem; color: var(--text-faint); margin-top: 3px; }
+
+/* ---------- Best Providers & Favourites — info overlays directly on the
+   cover photo (icon top-left, save top-right, name+location bottom-left,
+   arrow bottom-right). No dark wash behind the text — legibility comes
+   from text-shadow only, so the photo stays fully visible. ---------- */
 .featured-scroll {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   overflow-x: auto;
   scrollbar-width: none;
 }
 .featured-scroll::-webkit-scrollbar { display: none; }
 
-.featured-card {
+.cover-card {
   position: relative;
   flex: 0 0 auto;
-  width: 72%;
-  min-width: 220px;
-  height: 160px;
+  width: 208px;
+  height: 152px;
   border-radius: var(--radius-md);
   overflow: hidden;
+  text-align: left;
 }
 
-.featured-card img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.featured-overlay {
+.cover-icon-badge {
   position: absolute;
-  inset: 0;
+  top: 10px;
+  left: 10px;
   display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  padding: 12px;
-  background: linear-gradient(to top, rgba(0,0,0,0.85) 10%, transparent 60%);
-  z-index: 1;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  z-index: 2;
+  filter: drop-shadow(0 1px 3px rgba(0,0,0,0.9)) drop-shadow(0 2px 8px rgba(0,0,0,0.7));
 }
 
-.featured-name {
-  font-weight: 800;
-  font-size: 0.92rem;
+.cover-save-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  filter: drop-shadow(0 1px 3px rgba(0,0,0,0.9)) drop-shadow(0 2px 6px rgba(0,0,0,0.6));
 }
-.featured-loc {
-  font-size: 0.7rem;
-  color: var(--text-dim);
+.cover-save-badge svg { width: 13px; height: 13px; color: rgba(255,255,255,0.85); }
+.cover-save-badge.saved svg { color: var(--gold); }
+
+.cover-info {
+  position: absolute;
+  bottom: 8px;
+  left: 10px;
+  right: 44px;
+  z-index: 2;
+}
+.cover-name {
+  font-weight: 800;
+  font-size: 0.86rem;
+  color: #fff;
+  line-height: 1.25;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.9), 0 2px 10px rgba(0,0,0,0.7);
+}
+.cover-loc {
+  font-size: 0.68rem;
+  color: rgba(255,255,255,0.9);
   margin-top: 3px;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.9), 0 2px 10px rgba(0,0,0,0.7);
+}
+
+.cover-arrow {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--gold);
+  color: #171200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.8rem;
+  z-index: 2;
+}
+
+.cover-rating-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 2;
+  background: var(--gold);
+  color: #171200;
+  font-weight: 700;
+  font-size: 0.74rem;
+  padding: 4px 9px;
+  border-radius: var(--radius-sm);
+}
+
+.cover-promo-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 2;
+  background: var(--gold);
+  color: #171200;
+  font-weight: 700;
+  font-size: 0.66rem;
+  padding: 4px 9px;
+  border-radius: var(--radius-pill);
+  max-width: calc(100% - 56px);
+}
+
+/* Category feed cards (after tapping a category) — bigger variant of the same overlay card */
+.cover-card-cat {
+  width: 190px;
+  height: 188px;
 }
 
 .rating-chip {
@@ -679,7 +785,7 @@ img { display: block; max-width: 100%; }
   font-weight: 700;
   font-size: 0.7rem;
   padding: 4px 9px;
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-sm);
   z-index: 2;
 }
 
@@ -706,47 +812,24 @@ img { display: block; max-width: 100%; }
 }
 
 .offer-card {
-  background: var(--surface-2);
+  position: relative;
   border-radius: var(--radius-md);
   overflow: hidden;
   text-align: left;
-}
-
-.offer-img-wrap {
-  position: relative;
-  height: 96px;
-}
-.offer-img-wrap img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: 168px;
 }
 
 .offer-badge {
   position: absolute;
-  top: 7px;
-  left: 7px;
+  top: 10px;
+  left: 10px;
   background: var(--gold);
   color: #171200;
-  font-size: 0.64rem;
+  font-size: 0.66rem;
   font-weight: 700;
-  padding: 4px 8px;
+  padding: 4px 9px;
   border-radius: var(--radius-pill);
   z-index: 2;
-}
-
-.offer-body {
-  padding: 9px 11px 12px;
-  position: relative;
-}
-
-.offer-name { font-weight: 700; font-size: 0.84rem; }
-.offer-sub { font-size: 0.68rem; color: var(--text-faint); margin-top: 2px; }
-
-.offer-body .arrow-btn {
-  position: absolute;
-  right: 9px;
-  bottom: 11px;
 }
 
 .bottom-spacer { height: 26px; }
@@ -918,16 +1001,18 @@ img { display: block; max-width: 100%; }
 
 .timetable-slot {
   flex: 0 0 auto;
-  width: 68px;
-  height: 52px;
+  width: 92px;
+  height: 54px;
   border-radius: var(--radius-sm);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: 0.7rem;
+  font-size: 0.66rem;
   font-weight: 700;
   gap: 2px;
+  text-align: center;
+  padding: 0 4px;
 }
 
 .timetable-slot.empty-slot {
@@ -1205,30 +1290,28 @@ img { display: block; max-width: 100%; }
           </div>
           <div class="offers-grid">
             <button class="offer-card" data-provider="razor">
-              <div class="offer-img-wrap">
-                <div class="tile tile-hair">
-                  <img class="tile-photo" src="https://loremflickr.com/480/360/barber,haircut,salon" alt="" loading="lazy" onerror="this.remove()" />
-                </div>
-                <span class="offer-badge">20% Off Haircut</span>
+              <div class="tile tile-hair">
+                <img class="tile-photo" src="https://loremflickr.com/480/360/barber,haircut,salon" alt="" loading="lazy" onerror="this.remove()" />
               </div>
-              <div class="offer-body">
-                <div class="offer-name">Razor Work Fred</div>
-                <div class="offer-sub">Quality, Trusted Services</div>
-                <span class="arrow-btn small">→</span>
+              <span class="offer-badge">20% Off Haircut</span>
+              <span class="cover-save-badge"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 2a2 2 0 0 0-2 2v18l8-5 8 5V4a2 2 0 0 0-2-2H6z"/></svg></span>
+              <div class="cover-info">
+                <div class="cover-name">Razor Work Fred</div>
+                <div class="cover-loc">Quality, Trusted Services</div>
               </div>
+              <span class="cover-arrow">→</span>
             </button>
             <button class="offer-card" data-provider="nails">
-              <div class="offer-img-wrap">
-                <div class="tile tile-nails">
-                  <img class="tile-photo" src="https://loremflickr.com/480/360/manicure,nails,salon" alt="" loading="lazy" onerror="this.remove()" />
-                </div>
-                <span class="offer-badge">15% Off Manicure</span>
+              <div class="tile tile-nails">
+                <img class="tile-photo" src="https://loremflickr.com/480/360/manicure,nails,salon" alt="" loading="lazy" onerror="this.remove()" />
               </div>
-              <div class="offer-body">
-                <div class="offer-name">Nail Artistry Hub</div>
-                <div class="offer-sub">Premium Nail Services</div>
-                <span class="arrow-btn small">→</span>
+              <span class="offer-badge">15% Off Manicure</span>
+              <span class="cover-save-badge"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 2a2 2 0 0 0-2 2v18l8-5 8 5V4a2 2 0 0 0-2-2H6z"/></svg></span>
+              <div class="cover-info">
+                <div class="cover-name">Nail Artistry Hub</div>
+                <div class="cover-loc">Premium Nail Services</div>
               </div>
+              <span class="cover-arrow">→</span>
             </button>
           </div>
         </section>
@@ -1427,6 +1510,28 @@ img { display: block; max-width: 100%; }
         </section>
 
         <section class="section">
+          <div class="section-head"><h3>Wallet</h3></div>
+          <div class="wallet-card">
+            <div class="wallet-balance-label">Available Balance</div>
+            <div class="wallet-balance">$1,240.00</div>
+            <div class="wallet-actions">
+              <button class="btn-primary">Withdraw</button>
+              <button class="wallet-btn-secondary">View Transactions</button>
+            </div>
+          </div>
+          <div class="wallet-stats">
+            <div class="wallet-stat">
+              <span class="wallet-stat-value">$340</span>
+              <span class="wallet-stat-label">This week</span>
+            </div>
+            <div class="wallet-stat">
+              <span class="wallet-stat-value">$120</span>
+              <span class="wallet-stat-label">Pending clearance</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
           <div class="section-head"><h3>Upcoming Appointments</h3></div>
           <div class="profile-list">
             <div class="profile-row">
@@ -1464,15 +1569,7 @@ img { display: block; max-width: 100%; }
 
         <section class="section">
           <div class="section-head"><h3>Weekly Availability</h3></div>
-          <div class="timetable-panel">
-            <div class="timetable-row"><span class="timetable-day">Mon</span><span class="timetable-hours">9:00 AM – 6:00 PM</span></div>
-            <div class="timetable-row"><span class="timetable-day">Tue</span><span class="timetable-hours">9:00 AM – 6:00 PM</span></div>
-            <div class="timetable-row"><span class="timetable-day">Wed</span><span class="timetable-hours">9:00 AM – 6:00 PM</span></div>
-            <div class="timetable-row"><span class="timetable-day">Thu</span><span class="timetable-hours">9:00 AM – 7:00 PM</span></div>
-            <div class="timetable-row"><span class="timetable-day">Fri</span><span class="timetable-hours">9:00 AM – 7:00 PM</span></div>
-            <div class="timetable-row"><span class="timetable-day">Sat</span><span class="timetable-hours">10:00 AM – 5:00 PM</span></div>
-            <div class="timetable-row closed"><span class="timetable-day">Sun</span><span class="timetable-hours">Closed</span></div>
-          </div>
+          <div id="provider-timetable-grid"><!-- injected by JS --></div>
           <button class="btn-primary" style="margin-top:14px; width:100%;">Edit Availability</button>
         </section>
       </div>
@@ -1742,8 +1839,42 @@ function padPlaces(subName, basePlaces, target = 8) {
   return places;
 }
 
+// ---------- Review generation (deterministic — stable per place, not random-per-render) ----------
+const REVIEWER_NAMES = ["Jordan M.", "Casey L.", "Taylor R.", "Morgan S.", "Alex P.", "Riley K.", "Jamie T.", "Drew H.", "Sam W.", "Avery B.", "Chris N.", "Jess F."];
+const REVIEW_DATES = ["3 days ago", "1 week ago", "2 weeks ago", "3 weeks ago", "1 month ago", "2 months ago"];
+const REVIEW_TEMPLATES = [
+  (sub) => `Really happy with my ${sub} appointment — booked again the next week.`,
+  (sub) => `Great experience overall, will definitely come back for another ${sub} session.`,
+  () => `Professional, on time, and the result was even better than I expected.`,
+  () => `Clean space and attentive service from start to finish.`,
+  () => `Highly recommend — attention to detail was really on point.`,
+  () => `Booked last minute and still got great care and a solid result.`,
+  (sub) => `Consistent quality every time I book ${sub} here.`,
+  () => `Friendly staff, fair pricing, would book here again.`,
+];
+
+function generateReviews(place, subName) {
+  const count = 3;
+  const reviews = [];
+  for (let i = 0; i < count; i++) {
+    const nameIdx = (place.name.length + i * 3) % REVIEWER_NAMES.length;
+    const templateIdx = (place.name.length + i * 5) % REVIEW_TEMPLATES.length;
+    const dateIdx = (place.name.length + i * 2) % REVIEW_DATES.length;
+    const baseRating = Math.round(parseFloat(place.rating));
+    const rating = Math.max(4, Math.min(5, baseRating - (i === 2 ? 1 : 0)));
+    reviews.push({
+      name: REVIEWER_NAMES[nameIdx],
+      rating,
+      date: REVIEW_DATES[dateIdx],
+      comment: REVIEW_TEMPLATES[templateIdx](subName.toLowerCase()),
+    });
+  }
+  return reviews;
+}
+
 // Decorate every place with role, icon, tile class, photo query, description,
-// and timetable — computed once from its subcategory so the data above stays lean.
+// timetable, and reviews — computed once from its subcategory so the data
+// above stays lean.
 Object.entries(CATEGORY_DATA).forEach(([catKey, category]) => {
   Object.entries(category.subcategories).forEach(([subName, sub]) => {
     sub.places = padPlaces(subName, sub.places, 8);
@@ -1758,6 +1889,7 @@ Object.entries(CATEGORY_DATA).forEach(([catKey, category]) => {
       const startingPrice = Math.min(...place.services.map((s) => s.price));
       place.price = startingPrice;
       place.description = `${place.name} is a ${place.rating}★ rated ${sub.role.toLowerCase()} specializing in ${subName.toLowerCase()}, trusted by ${place.reviews} clients near ${place.address.split(",")[1] ? place.address.split(",")[1].trim() : "you"}. Known for consistent, high-quality ${subName.toLowerCase()} services in a relaxed, professional setting.`;
+      place.reviewsList = generateReviews(place, subName);
     });
   });
 });
@@ -1792,16 +1924,58 @@ const FAVORITES = [
 
 const BOOKMARK_SVG = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 2a2 2 0 0 0-2 2v18l8-5 8 5V4a2 2 0 0 0-2-2H6z"/></svg>`;
 
-// ---------- Photo + icon tile builder ----------
-// Real, keyword-matched photo underneath; the correct service icon always on
-// top as a small corner badge, so the visual is never wrong even if the
-// fetched photo misses, but the photo — not the icon — stays the main visual.
-function tileInnerHTML(place) {
+// ---------- Photo tile builders ----------
+// Real, keyword-matched photo underneath. tilePhotoHTML is the bare photo
+// (used where the icon is rendered separately, e.g. cover cards);
+// tileInnerHTML adds a small corner icon badge on top of the photo (used
+// for cards where the icon lives inside the tile itself).
+function tilePhotoHTML(place) {
   const src = `https://loremflickr.com/480/360/${encodeURIComponent(place.photoQuery)}`;
+  return `<img class="tile-photo" src="${src}" alt="" loading="lazy" onerror="this.remove()" />`;
+}
+function tileInnerHTML(place) {
   return `
-    <img class="tile-photo" src="${src}" alt="" loading="lazy" onerror="this.remove()" />
+    ${tilePhotoHTML(place)}
     <span class="tile-icon">${place.icon}</span>
   `;
+}
+
+// Cover card — used for Best Providers & Favourites. Everything overlays
+// directly on the photo: name + location (bottom-left), arrow
+// (bottom-right), save tag (top-right). The category icon (top-left) is
+// exclusive to Best Providers — Favourites already implies "saved" via
+// the filled bookmark, so it skips the icon to stay uncluttered.
+// No dark circle behind any badge — legibility comes from a drop-shadow
+// on the icon/glyph itself, never a solid or tinted background.
+//
+// topLeft: { kind: "icon" }  -> category icon (Best Providers, Favourites)
+//          { kind: "rating" } -> ★ rating chip (category feed cards)
+//          { kind: "promo", text } -> gold promo tag (Special Offers)
+// subtitle: "loc" -> 📍 address, "price" -> "From $X"
+function buildCoverCard(place, { saved, topLeft, subtitle }) {
+  let topLeftHTML = "";
+  if (topLeft?.kind === "icon") topLeftHTML = `<span class="cover-icon-badge">${place.icon}</span>`;
+  else if (topLeft?.kind === "rating") topLeftHTML = `<span class="cover-rating-badge">★ ${place.rating}</span>`;
+  else if (topLeft?.kind === "promo") topLeftHTML = `<span class="cover-promo-badge">${topLeft.text}</span>`;
+
+  const subtitleHTML = subtitle === "price"
+    ? `<div class="cover-loc">From $${place.price}</div>`
+    : `<div class="cover-loc">📍 ${place.address}</div>`;
+
+  const card = document.createElement("button");
+  card.className = "cover-card";
+  card.innerHTML = `
+    <div class="tile ${place.tileClass}">${tilePhotoHTML(place)}</div>
+    ${topLeftHTML}
+    <span class="cover-save-badge ${saved ? "saved" : ""}">${BOOKMARK_SVG}</span>
+    <div class="cover-info">
+      <div class="cover-name">${place.name}</div>
+      ${subtitleHTML}
+    </div>
+    <span class="cover-arrow">→</span>
+  `;
+  card.addEventListener("click", () => renderDetail(place));
+  return card;
 }
 
 // ==========================================================
@@ -1830,45 +2004,20 @@ function showScreen(screen) {
   window.scrollTo({ top: 0, behavior: "instant" });
 }
 
-// ---------- Best Providers row (home screen) ----------
+// ---------- Best Providers row (home screen) — not yet saved, icon shown ----------
 function renderBestProviders() {
   bestProvidersScroll.innerHTML = "";
   BEST_PROVIDERS.forEach((place) => {
-    const card = document.createElement("button");
-    card.className = "featured-card";
-    card.innerHTML = `
-      ${tileInnerHTML(place)}
-      <div class="featured-overlay">
-        <div class="featured-text">
-          <div class="featured-name">${place.name}</div>
-          <div class="featured-loc">📍 ${place.address}</div>
-        </div>
-        <span class="arrow-btn">→</span>
-      </div>
-    `;
-    card.addEventListener("click", () => renderDetail(place));
-    bestProvidersScroll.appendChild(card);
+    bestProvidersScroll.appendChild(buildCoverCard(place, { saved: false, topLeft: { kind: "icon" }, subtitle: "loc" }));
   });
 }
 renderBestProviders();
 
-// ---------- Favourites row (saved providers) ----------
+// ---------- Favourites row (saved providers) — filled gold save tag + icon ----------
 function renderFavourites() {
   favouritesScroll.innerHTML = "";
   FAVORITES.forEach((place) => {
-    const card = document.createElement("button");
-    card.className = "subcat-card";
-    card.innerHTML = `
-      <div class="subcat-img-wrap">
-        <div class="tile ${place.tileClass}">${tileInnerHTML(place)}</div>
-        <span class="rating-chip">★ ${place.rating}</span>
-        <span class="bookmark-badge">${BOOKMARK_SVG}</span>
-      </div>
-      <div class="subcat-name">${place.name}</div>
-      <div class="subcat-price">From $${place.price}</div>
-    `;
-    card.addEventListener("click", () => renderDetail(place));
-    favouritesScroll.appendChild(card);
+    favouritesScroll.appendChild(buildCoverCard(place, { saved: true, topLeft: { kind: "icon" }, subtitle: "loc" }));
   });
 }
 renderFavourites();
@@ -1914,13 +2063,26 @@ function formatHourLabel(h) {
   return `${hh}:00 ${ampm}`;
 }
 
+// Compact "start – end" range label for a one-hour slot starting at h,
+// e.g. 9 -> "9–10 AM", 11 -> "11 AM–12 PM", 12 -> "12–1 PM".
+function formatSlotRange(h) {
+  const startH = h;
+  const endH = h + 1;
+  const startAmpm = startH >= 12 ? "PM" : "AM";
+  const endAmpm = endH >= 12 ? "PM" : "AM";
+  let startHH = startH % 12; if (startHH === 0) startHH = 12;
+  let endHH = endH % 12; if (endHH === 0) endHH = 12;
+  if (startAmpm === endAmpm) return `${startHH}–${endHH} ${endAmpm}`;
+  return `${startHH} ${startAmpm}–${endHH} ${endAmpm}`;
+}
+
 function generateDaySlots(hoursStr) {
   if (hoursStr === "Closed") return [];
   const [openStr, closeStr] = hoursStr.split(" – ");
   const openH = Math.ceil(hourStringTo24(openStr));
   const closeH = hourStringTo24(closeStr);
   const slots = [];
-  for (let h = openH; h < closeH; h++) slots.push(formatHourLabel(h));
+  for (let h = openH; h < closeH; h++) slots.push(formatSlotRange(h));
   return slots;
 }
 
@@ -1973,8 +2135,79 @@ function timetablePanelHTML(data) {
   `;
 }
 
-function reviewsPanelHTML() {
-  return `<div style="color:var(--text-faint); text-align:center; padding:30px 0;">Reviews coming soon.</div>`;
+// ---------- Provider Mode: the provider's own weekly availability, same
+// box style as the customer-facing timetable, but read-only (their own
+// schedule, not something they book against). ----------
+const MY_PROVIDER_SCHEDULE = { name: "Koluy Adeyemi Barber Availability", hours: HOURS_STANDARD };
+
+function renderProviderTimetable() {
+  const container = document.getElementById("provider-timetable-grid");
+  if (!container) return;
+  const dayBlocks = MY_PROVIDER_SCHEDULE.hours.map(([day, hrs]) => {
+    if (hrs === "Closed") {
+      return `
+        <div class="timetable-day-block">
+          <div class="timetable-day-heading">
+            <span class="timetable-day-name">${day}</span>
+            <span class="timetable-day-hours">Closed</span>
+          </div>
+          <div class="timetable-closed-note">Not taking bookings this day</div>
+        </div>
+      `;
+    }
+    const slots = generateDaySlots(hrs);
+    const slotHTML = slots.map((label, idx) => {
+      if (isSlotBooked(MY_PROVIDER_SCHEDULE, day, idx)) {
+        return `<div class="timetable-slot booked-slot"><span>${label}</span><span class="slot-tag">Booked</span></div>`;
+      }
+      return `<div class="timetable-slot empty-slot"><span class="slot-plus">✓</span><span>${label}</span></div>`;
+    }).join("");
+    return `
+      <div class="timetable-day-block">
+        <div class="timetable-day-heading">
+          <span class="timetable-day-name">${day}</span>
+          <span class="timetable-day-hours">${hrs}</span>
+        </div>
+        <div class="timetable-slot-row">${slotHTML}</div>
+      </div>
+    `;
+  }).join("");
+
+  container.innerHTML = `
+    <div class="timetable-grid-wrap">
+      ${dayBlocks}
+      <div class="timetable-legend">
+        <span><span class="legend-dot empty"></span> Open</span>
+        <span><span class="legend-dot booked"></span> Booked</span>
+      </div>
+    </div>
+  `;
+}
+renderProviderTimetable();
+
+function reviewsPanelHTML(data) {
+  const list = data.reviewsList || [];
+  if (!list.length) {
+    return `<div style="color:var(--text-faint); text-align:center; padding:30px 0;">No reviews yet.</div>`;
+  }
+  const avg = (list.reduce((sum, r) => sum + r.rating, 0) / list.length).toFixed(1);
+  const cards = list.map((r) => `
+    <div class="review-card">
+      <div class="review-head">
+        <span class="review-name">${r.name}</span>
+        <span class="review-stars">${"★".repeat(r.rating)}${"☆".repeat(5 - r.rating)}</span>
+      </div>
+      <div class="review-date">${r.date}</div>
+      <p class="review-comment">${r.comment}</p>
+    </div>
+  `).join("");
+  return `
+    <div class="reviews-summary">
+      <span class="reviews-summary-score">${avg}</span>
+      <span class="reviews-summary-text">Based on ${data.reviews} reviews<br/>Showing ${list.length} most recent</span>
+    </div>
+    <div class="reviews-list">${cards}</div>
+  `;
 }
 
 function renderTab(tabName) {
@@ -1990,7 +2223,7 @@ function renderTab(tabName) {
       btn.addEventListener("click", () => openBooking(currentProviderData, btn.dataset.day, btn.dataset.time));
     });
   } else if (tabName === "reviews") {
-    tabContent.innerHTML = reviewsPanelHTML();
+    tabContent.innerHTML = reviewsPanelHTML(currentProviderData);
   }
 }
 
@@ -2130,19 +2363,12 @@ bookingBackBtn.addEventListener("click", () => showScreen(detailScreen));
 
 
 // ---------- Category selection: render subcategory feed ----------
-
+// Uses the same overlay cover-card as Best Providers/Favourites (rating
+// top-left, save tag top-right, name+price bottom-left, arrow bottom-right)
+// so there's no separate dark panel — just a larger card size.
 function buildSubcatCard(place) {
-  const card = document.createElement("button");
-  card.className = "subcat-card";
-  card.innerHTML = `
-    <div class="subcat-img-wrap">
-      <div class="tile ${place.tileClass}">${tileInnerHTML(place)}</div>
-      <span class="rating-chip">★ ${place.rating}</span>
-    </div>
-    <div class="subcat-name">${place.name}</div>
-    <div class="subcat-price">From $${place.price}</div>
-  `;
-  card.addEventListener("click", () => renderDetail(place));
+  const card = buildCoverCard(place, { saved: false, topLeft: { kind: "rating" }, subtitle: "price" });
+  card.classList.add("cover-card-cat");
   return card;
 }
 

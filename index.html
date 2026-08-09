@@ -3,7 +3,17 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-<title>GlowUp — Book Local Services</title>
+<title>Owsis — Book Local Services</title>
+<link rel="manifest" href="manifest.json" />
+<meta name="theme-color" content="#0e0e0e" />
+<link rel="icon" type="image/x-icon" href="favicon.ico" />
+<link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32.png" />
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png" />
+<link rel="apple-touch-icon" href="icons/icon-180.png" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Owsis" />
+<meta name="mobile-web-app-capable" content="yes" />
 <style>
 /* ==========================================================
    GlowUp — dark / gold booking app theme
@@ -2420,6 +2430,15 @@ document.querySelectorAll(".category-pill").forEach((pill) => {
   });
 });
 
+</script>
+<script>
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("service-worker.js").catch(() => {
+        // Installability still works without this; it just enables offline use.
+      });
+    });
+  }
 </script>
 </body>
 </html>

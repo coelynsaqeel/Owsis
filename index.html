@@ -562,31 +562,6 @@ img { display: block; max-width: 100%; }
 .profile-name { font-weight: 800; font-size: 1.05rem; }
 .profile-sub { color: var(--gold); font-size: 0.8rem; font-weight: 600; margin-top: 2px; }
 
-.mode-switch {
-  display: flex;
-  gap: 8px;
-  background: var(--surface-2);
-  border-radius: var(--radius-pill);
-  padding: 6px;
-  margin-bottom: 24px;
-}
-.mode-btn {
-  flex: 1;
-  text-align: center;
-  padding: 12px 0;
-  border-radius: var(--radius-pill);
-  font-weight: 700;
-  font-size: 0.85rem;
-  color: var(--text-dim);
-}
-.mode-btn.active {
-  background: var(--gold);
-  color: #171200;
-}
-
-.mode-panel { display: none; }
-.mode-panel.active { display: block; }
-
 .profile-list {
   display: flex;
   flex-direction: column;
@@ -632,6 +607,88 @@ img { display: block; max-width: 100%; }
 }
 .stat-value { font-size: 1.2rem; font-weight: 800; color: var(--gold); }
 .stat-label { font-size: 0.68rem; color: var(--text-faint); margin-top: 4px; line-height: 1.3; }
+
+/* ---------- Toggle switch (Settings: Service Provider Mode; Provider feed: Accepting bookings) ---------- */
+.toggle-switch {
+  position: relative;
+  flex: 0 0 auto;
+  width: 46px;
+  height: 26px;
+  border-radius: var(--radius-pill);
+  background: var(--surface-3);
+  transition: background 0.2s ease;
+}
+.toggle-switch .toggle-knob {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--text-dim);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+.toggle-switch.on,
+.toggle-switch[aria-checked="true"] {
+  background: rgba(245, 180, 0, 0.25);
+}
+.toggle-switch.on .toggle-knob,
+.toggle-switch[aria-checked="true"] .toggle-knob {
+  transform: translateX(20px);
+  background: var(--gold);
+}
+
+.settings-toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  background: var(--surface-2);
+  border-radius: var(--radius-md);
+  padding: 16px;
+}
+.settings-toggle-text { flex: 1; min-width: 0; }
+.settings-toggle-text .profile-row-sub { margin-top: 4px; line-height: 1.4; }
+
+/* ---------- Provider home feed hero ---------- */
+.provider-hero {
+  background: var(--surface-2);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  margin-bottom: 20px;
+}
+.provider-hero-label {
+  color: var(--gold);
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+.provider-hero h2 {
+  margin: 6px 0 14px;
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+.accepting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.84rem;
+  color: var(--text-dim);
+  font-weight: 600;
+}
+
+.request-row-actions {
+  display: flex;
+  gap: 8px;
+  flex: 0 0 auto;
+}
+.request-btn {
+  padding: 7px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+.request-btn.accept { background: var(--gold); color: #171200; }
+.request-btn.decline { background: var(--surface-3); color: var(--text-dim); }
 
 /* ---------- Wallet (provider mode) ---------- */
 .wallet-card {
@@ -856,11 +913,13 @@ img { display: block; max-width: 100%; }
 .bottom-spacer { height: 26px; }
 
 /* ============ DETAIL SCREEN ============ */
-#detail-screen { padding: 0 0 24px 0; }
+#detail-screen { padding: 20px 20px 24px; }
 
 .detail-hero {
   position: relative;
-  height: 260px;
+  height: 200px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
 }
 .detail-hero img {
   width: 100%;
@@ -870,8 +929,8 @@ img { display: block; max-width: 100%; }
 
 .back-btn {
   position: absolute;
-  top: 20px;
-  left: 20px;
+  top: 14px;
+  left: 14px;
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -880,28 +939,43 @@ img { display: block; max-width: 100%; }
   align-items: center;
   justify-content: center;
   font-size: 1.1rem;
+  z-index: 3;
 }
 
 .status-chip {
   position: absolute;
-  top: 22px;
+  top: 14px;
   padding: 6px 14px;
   border-radius: var(--radius-pill);
   font-size: 0.78rem;
   font-weight: 700;
+  z-index: 2;
 }
 .status-chip.available {
-  left: 72px;
+  left: 64px;
   background: #1fae5c;
   color: #fff;
 }
 .status-chip.role {
-  right: 20px;
+  right: 14px;
   background: var(--gold);
   color: #171200;
 }
 
-.detail-body { padding: 20px; }
+/* Provider's own feed hero has no back button, so its "Open" chip sits
+   flush left, and gets a third Edit button centered between the two. */
+.provider-hero-card .status-chip.available { left: 14px; }
+.edit-chip {
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(20,20,20,0.75);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.25);
+  backdrop-filter: blur(3px);
+}
+.edit-chip:active { background: rgba(20,20,20,0.9); }
+
+.detail-body { padding: 20px 0 0; }
 
 .detail-title-row {
   display: flex;
@@ -1054,6 +1128,24 @@ img { display: block; max-width: 100%; }
   color: var(--text-faint);
 }
 
+/* Pending booking request — highlighted and tappable so the provider can
+   review the customer's description/reference images and accept/decline */
+.timetable-slot.pending-slot {
+  background: var(--gold);
+  color: #171200;
+  border: 1.5px solid transparent;
+  animation: pending-pulse 1.8s ease-in-out infinite;
+}
+.timetable-slot.pending-slot .slot-tag {
+  font-size: 0.62rem;
+  font-weight: 800;
+  color: #171200;
+}
+@keyframes pending-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(245, 180, 0, 0.45); }
+  50% { box-shadow: 0 0 0 5px rgba(245, 180, 0, 0); }
+}
+
 .timetable-closed-note {
   color: var(--text-faint);
   font-size: 0.78rem;
@@ -1078,6 +1170,7 @@ img { display: block; max-width: 100%; }
 }
 .legend-dot.empty { border: 1.5px dashed var(--gold); }
 .legend-dot.booked { background: var(--surface-3); }
+.legend-dot.pending { background: var(--gold); }
 
 /* ---------- Booking screen ---------- */
 #booking-screen { padding: 20px 20px 0; }
@@ -1114,6 +1207,80 @@ img { display: block; max-width: 100%; }
   resize: vertical;
 }
 .booking-textarea::placeholder { color: var(--text-faint); }
+
+/* ---------- Edit Business form controls ---------- */
+.edit-add-form {
+  background: var(--surface-2);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.edit-input {
+  width: 100%;
+  background: var(--surface-3);
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 11px 13px;
+  color: var(--text);
+  font-size: 0.85rem;
+  font-family: inherit;
+}
+.edit-input::placeholder { color: var(--text-faint); }
+.edit-input-row { display: flex; gap: 10px; }
+.edit-input-row .edit-input { flex: 1; min-width: 0; }
+
+.remove-row-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--surface-3);
+  color: var(--text-dim);
+  font-size: 0.8rem;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.remove-row-btn:active { background: rgba(220,60,60,0.3); color: #fff; }
+
+.edit-day-block {
+  background: var(--surface-2);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  margin-bottom: 10px;
+}
+.edit-day-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.edit-day-name { font-weight: 800; font-size: 0.92rem; }
+.edit-day-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+.edit-day-hours { font-size: 0.82rem; color: var(--text-dim); }
+.edit-day-hours.closed-label { color: var(--text-faint); font-style: italic; }
+.hour-adjust-row { display: flex; gap: 8px; }
+.hour-adjust-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--surface-3);
+  color: var(--text);
+  font-size: 1rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hour-adjust-btn:active { background: var(--gold); color: #171200; }
+.hour-adjust-btn:disabled { opacity: 0.35; }
 
 .booking-images-row {
   display: flex;
@@ -1183,6 +1350,38 @@ img { display: block; max-width: 100%; }
 }
 .booking-confirm-title { font-weight: 800; font-size: 1.05rem; margin-bottom: 6px; }
 .booking-confirm-sub { color: var(--text-dim); font-size: 0.85rem; line-height: 1.5; }
+
+/* ---------- Booking request review (provider side) ---------- */
+#request-screen { padding: 20px 20px 0; }
+
+.request-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--surface-3);
+  color: var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1rem;
+  flex: 0 0 auto;
+}
+
+.request-decision-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 6px;
+}
+.request-decision-btn {
+  flex: 1;
+  padding: 13px 0;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+.request-decision-btn.accept { background: var(--gold); color: #171200; }
+.request-decision-btn.decline { background: var(--surface-3); color: var(--text-dim); }
 
 /* ---------- Responsive ---------- */
 @media (min-width: 431px) {
@@ -1434,152 +1633,344 @@ img { display: block; max-width: 100%; }
         <img class="avatar avatar-lg" src="https://i.pravatar.cc/120?img=47" alt="User avatar" />
         <div>
           <div class="profile-name">Koluy Adeyemi</div>
-          <div class="profile-sub" id="profile-mode-label">Customer Account</div>
+          <div class="profile-sub">Customer Account</div>
         </div>
       </div>
 
-      <div class="mode-switch">
-        <button class="mode-btn active" data-mode="customer">🧑 Customer Mode</button>
-        <button class="mode-btn" data-mode="provider">💼 Provider Mode</button>
+      <section class="section">
+        <div class="section-head"><h3>My Bookings</h3></div>
+        <div class="profile-list">
+          <div class="profile-row">
+            <span class="profile-row-icon">✂️</span>
+            <div class="profile-row-text">
+              <div class="profile-row-title">Classic Haircut — Razor &amp; Co.</div>
+              <div class="profile-row-sub">Tomorrow, 10:00 AM</div>
+            </div>
+            <span class="status-pill upcoming">Upcoming</span>
+          </div>
+          <div class="profile-row">
+            <span class="profile-row-icon">💅</span>
+            <div class="profile-row-text">
+              <div class="profile-row-title">Gel Polish — Nail Artistry Hub</div>
+              <div class="profile-row-sub">Aug 2, 2:30 PM</div>
+            </div>
+            <span class="status-pill done">Completed</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head"><h3>Account</h3></div>
+        <div class="profile-list">
+          <button class="profile-row profile-row-btn">
+            <span class="profile-row-icon">💳</span>
+            <div class="profile-row-text"><div class="profile-row-title">Payment Methods</div></div>
+            <span class="arrow-btn small">→</span>
+          </button>
+          <button class="profile-row profile-row-btn" id="open-settings-btn">
+            <span class="profile-row-icon">⚙️</span>
+            <div class="profile-row-text"><div class="profile-row-title">Settings</div></div>
+            <span class="arrow-btn small">→</span>
+          </button>
+        </div>
+      </section>
+
+      <div class="bottom-spacer"></div>
+    </main>
+
+    <!-- ============ SETTINGS SCREEN ============ -->
+    <main id="settings-screen" class="screen">
+
+      <header class="profile-topbar">
+        <button class="back-btn" id="settings-back-btn" aria-label="Back">←</button>
+        <h2>Settings</h2>
+        <span style="width:40px;"></span>
+      </header>
+
+      <section class="section">
+        <div class="section-head"><h3>Account</h3></div>
+        <div class="profile-list">
+          <button class="profile-row profile-row-btn">
+            <span class="profile-row-icon">🔔</span>
+            <div class="profile-row-text"><div class="profile-row-title">Notifications</div></div>
+            <span class="arrow-btn small">→</span>
+          </button>
+          <button class="profile-row profile-row-btn">
+            <span class="profile-row-icon">🔒</span>
+            <div class="profile-row-text"><div class="profile-row-title">Privacy</div></div>
+            <span class="arrow-btn small">→</span>
+          </button>
+          <button class="profile-row profile-row-btn">
+            <span class="profile-row-icon">🌐</span>
+            <div class="profile-row-text"><div class="profile-row-title">Language</div></div>
+            <span class="arrow-btn small">→</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head"><h3>Business</h3></div>
+        <div class="settings-toggle-row">
+          <div class="settings-toggle-text">
+            <div class="profile-row-title">Service Provider Mode</div>
+            <div class="profile-row-sub" id="provider-mode-desc">Switch on to manage bookings, services, and availability as a provider.</div>
+          </div>
+          <button class="toggle-switch" id="provider-mode-toggle" role="switch" aria-checked="false">
+            <span class="toggle-knob"></span>
+          </button>
+        </div>
+      </section>
+
+      <div class="bottom-spacer"></div>
+    </main>
+
+    <!-- ============ PROVIDER PROFILE (opened from the profile icon while
+         in Service Provider Mode — separate from the customer profile) ============ -->
+    <main id="provider-profile-screen" class="screen">
+
+      <header class="profile-topbar">
+        <button class="back-btn" id="provider-profile-back-btn" aria-label="Back">←</button>
+        <h2>Profile</h2>
+        <span style="width:40px;"></span>
+      </header>
+
+      <div class="profile-card">
+        <img class="avatar avatar-lg" src="https://i.pravatar.cc/120?img=47" alt="Business avatar" />
+        <div>
+          <div class="profile-name">Razor &amp; Co. Barbershop</div>
+          <div class="profile-sub">Barber · Koluy Adeyemi</div>
+        </div>
       </div>
 
-      <!-- Customer Mode Panel -->
-      <div class="mode-panel active" data-mode-panel="customer">
-        <section class="section">
-          <div class="section-head"><h3>My Bookings</h3></div>
-          <div class="profile-list">
-            <div class="profile-row">
-              <span class="profile-row-icon">✂️</span>
-              <div class="profile-row-text">
-                <div class="profile-row-title">Classic Haircut — Razor &amp; Co.</div>
-                <div class="profile-row-sub">Tomorrow, 10:00 AM</div>
-              </div>
-              <span class="status-pill upcoming">Upcoming</span>
-            </div>
-            <div class="profile-row">
-              <span class="profile-row-icon">💅</span>
-              <div class="profile-row-text">
-                <div class="profile-row-title">Gel Polish — Nail Artistry Hub</div>
-                <div class="profile-row-sub">Aug 2, 2:30 PM</div>
-              </div>
-              <span class="status-pill done">Completed</span>
-            </div>
+      <section class="section">
+        <div class="settings-toggle-row">
+          <div class="settings-toggle-text">
+            <div class="profile-row-title">Accepting New Bookings</div>
+            <div class="profile-row-sub">Customers can only book while this is on.</div>
           </div>
-        </section>
+          <button class="toggle-switch on" id="status-toggle" role="switch" aria-checked="true">
+            <span class="toggle-knob"></span>
+          </button>
+        </div>
+      </section>
 
-        <section class="section">
-          <div class="section-head"><h3>Favorites</h3></div>
-          <div class="profile-list">
-            <div class="profile-row">
-              <span class="profile-row-icon">🪡</span>
-              <div class="profile-row-text">
-                <div class="profile-row-title">Ink &amp; Iron Tattoo Parlor</div>
-                <div class="profile-row-sub">Saved provider</div>
-              </div>
-            </div>
+      <section class="section">
+        <div class="section-head"><h3>Wallet</h3></div>
+        <div class="wallet-card">
+          <div class="wallet-balance-label">Available Balance</div>
+          <div class="wallet-balance">$1,240.00</div>
+          <div class="wallet-actions">
+            <button class="btn-primary">Withdraw</button>
+            <button class="wallet-btn-secondary">View Transactions</button>
           </div>
-        </section>
+        </div>
+        <div class="wallet-stats">
+          <div class="wallet-stat">
+            <span class="wallet-stat-value">$340</span>
+            <span class="wallet-stat-label">This week</span>
+          </div>
+          <div class="wallet-stat">
+            <span class="wallet-stat-value">$120</span>
+            <span class="wallet-stat-label">Pending clearance</span>
+          </div>
+        </div>
+      </section>
 
-        <section class="section">
-          <div class="section-head"><h3>Account</h3></div>
-          <div class="profile-list">
-            <button class="profile-row profile-row-btn">
-              <span class="profile-row-icon">💳</span>
-              <div class="profile-row-text"><div class="profile-row-title">Payment Methods</div></div>
-              <span class="arrow-btn small">→</span>
-            </button>
-            <button class="profile-row profile-row-btn">
-              <span class="profile-row-icon">⚙️</span>
-              <div class="profile-row-text"><div class="profile-row-title">Settings</div></div>
-              <span class="arrow-btn small">→</span>
-            </button>
+      <section class="section">
+        <div class="section-head"><h3>History</h3></div>
+        <div class="profile-list">
+          <div class="profile-row">
+            <span class="profile-row-icon">✂️</span>
+            <div class="profile-row-text">
+              <div class="profile-row-title">Classic Haircut — Jamie T.</div>
+              <div class="profile-row-sub">Yesterday, 2:00 PM · $35</div>
+            </div>
+            <span class="status-pill done">Completed</span>
           </div>
-        </section>
+          <div class="profile-row">
+            <span class="profile-row-icon">✂️</span>
+            <div class="profile-row-text">
+              <div class="profile-row-title">Fade &amp; Taper — Drew H.</div>
+              <div class="profile-row-sub">Mon, 11:00 AM · $45</div>
+            </div>
+            <span class="status-pill done">Completed</span>
+          </div>
+          <div class="profile-row">
+            <span class="profile-row-icon">✂️</span>
+            <div class="profile-row-text">
+              <div class="profile-row-title">Beard Trim — Chris N.</div>
+              <div class="profile-row-sub">Sat, 4:30 PM · $25</div>
+            </div>
+            <span class="status-pill done">Completed</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head"><h3>Business</h3></div>
+        <div class="profile-list">
+          <button class="profile-row profile-row-btn">
+            <span class="profile-row-icon">🏪</span>
+            <div class="profile-row-text"><div class="profile-row-title">Business Details</div></div>
+            <span class="arrow-btn small">→</span>
+          </button>
+          <button class="profile-row profile-row-btn">
+            <span class="profile-row-icon">🏦</span>
+            <div class="profile-row-text"><div class="profile-row-title">Payout Details</div></div>
+            <span class="arrow-btn small">→</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head"><h3>Account</h3></div>
+        <div class="profile-list">
+          <button class="profile-row profile-row-btn" id="open-settings-btn-provider">
+            <span class="profile-row-icon">⚙️</span>
+            <div class="profile-row-text"><div class="profile-row-title">Settings</div></div>
+            <span class="arrow-btn small">→</span>
+          </button>
+          <button class="profile-row profile-row-btn">
+            <span class="profile-row-icon">❓</span>
+            <div class="profile-row-text"><div class="profile-row-title">Help &amp; Support</div></div>
+            <span class="arrow-btn small">→</span>
+          </button>
+          <button class="profile-row profile-row-btn">
+            <span class="profile-row-icon">🚪</span>
+            <div class="profile-row-text"><div class="profile-row-title">Log Out</div></div>
+            <span class="arrow-btn small">→</span>
+          </button>
+        </div>
+      </section>
+
+      <div class="bottom-spacer"></div>
+    </main>
+
+    <!-- ============ PROVIDER HOME FEED — mirrors the same layout a
+         customer sees when they tap this business's card (hero + Services /
+         Description / Timetable / Reviews tabs), but this is the provider's
+         own view of it. ============ -->
+    <main id="provider-home-screen" class="screen">
+
+      <header class="topbar">
+        <div class="brand-mark">Owsis</div>
+        <button class="bell-btn" id="provider-profile-btn" aria-label="Profile">👤</button>
+      </header>
+
+      <div class="detail-hero provider-hero-card">
+        <div id="feed-hero-tile" class="tile tile-hair"><!-- injected by JS --></div>
+        <span class="status-chip available">● Open</span>
+        <button class="status-chip edit-chip" id="edit-business-btn" aria-label="Edit business">✏️ Edit</button>
+        <span class="status-chip role" id="feed-role">Barber</span>
       </div>
 
-      <!-- Provider Mode Panel -->
-      <div class="mode-panel" data-mode-panel="provider">
-        <section class="section">
-          <div class="stat-grid">
-            <div class="stat-box">
-              <div class="stat-value">18</div>
-              <div class="stat-label">Bookings this week</div>
-            </div>
-            <div class="stat-box">
-              <div class="stat-value">4.9★</div>
-              <div class="stat-label">Average rating</div>
-            </div>
-            <div class="stat-box">
-              <div class="stat-value">$1,240</div>
-              <div class="stat-label">Earnings this month</div>
-            </div>
+      <div class="detail-body">
+        <div class="detail-title-row">
+          <div>
+            <h2 id="feed-name">Razor &amp; Co. Barbershop</h2>
+            <div class="detail-loc">📍 <span id="feed-address">5 Albert Road, Barnoldswick</span></div>
           </div>
-        </section>
+          <div class="rating-box">
+            <div class="rating-star">★ <span id="feed-rating">4.9</span></div>
+            <div class="rating-count"><span id="feed-reviews">214</span> reviews</div>
+          </div>
+        </div>
 
-        <section class="section">
-          <div class="section-head"><h3>Wallet</h3></div>
-          <div class="wallet-card">
-            <div class="wallet-balance-label">Available Balance</div>
-            <div class="wallet-balance">$1,240.00</div>
-            <div class="wallet-actions">
-              <button class="btn-primary">Withdraw</button>
-              <button class="wallet-btn-secondary">View Transactions</button>
-            </div>
-          </div>
-          <div class="wallet-stats">
-            <div class="wallet-stat">
-              <span class="wallet-stat-value">$340</span>
-              <span class="wallet-stat-label">This week</span>
-            </div>
-            <div class="wallet-stat">
-              <span class="wallet-stat-value">$120</span>
-              <span class="wallet-stat-label">Pending clearance</span>
-            </div>
-          </div>
-        </section>
+        <div class="tab-row">
+          <button class="tab active" data-feed-tab="services">Services</button>
+          <button class="tab" data-feed-tab="description">Description</button>
+          <button class="tab" data-feed-tab="timetable">Timetable</button>
+          <button class="tab" data-feed-tab="reviews">Reviews</button>
+        </div>
 
-        <section class="section">
-          <div class="section-head"><h3>Upcoming Appointments</h3></div>
-          <div class="profile-list">
-            <div class="profile-row">
-              <span class="profile-row-icon">✂️</span>
-              <div class="profile-row-text">
-                <div class="profile-row-title">Classic Haircut — Jordan M.</div>
-                <div class="profile-row-sub">Today, 3:00 PM</div>
-              </div>
-              <span class="status-pill upcoming">Confirmed</span>
-            </div>
-            <div class="profile-row">
-              <span class="profile-row-icon">✂️</span>
-              <div class="profile-row-text">
-                <div class="profile-row-title">Fade &amp; Taper — Sam K.</div>
-                <div class="profile-row-sub">Tomorrow, 11:30 AM</div>
-              </div>
-              <span class="status-pill upcoming">Confirmed</span>
-            </div>
-          </div>
-        </section>
-
-        <section class="section">
-          <div class="section-head"><h3>My Services</h3></div>
-          <div class="profile-list">
-            <div class="profile-row">
-              <div class="profile-row-text"><div class="profile-row-title">Classic Haircut</div><div class="profile-row-sub">45 min</div></div>
-              <div class="service-price">$35</div>
-            </div>
-            <div class="profile-row">
-              <div class="profile-row-text"><div class="profile-row-title">Fade &amp; Taper</div><div class="profile-row-sub">60 min</div></div>
-              <div class="service-price">$45</div>
-            </div>
-          </div>
-        </section>
-
-        <section class="section">
-          <div class="section-head"><h3>Weekly Availability</h3></div>
-          <div id="provider-timetable-grid"><!-- injected by JS --></div>
-          <button class="btn-primary" style="margin-top:14px; width:100%;">Edit Availability</button>
-        </section>
+        <div id="feed-tab-content"><!-- injected by JS --></div>
       </div>
+
+      <div class="bottom-spacer"></div>
+    </main>
+
+    <!-- ============ BOOKING REQUEST — opened by tapping a highlighted
+         (pending) slot on the provider's own Timetable tab. Shows what the
+         customer submitted, with Accept/Decline below. ============ -->
+    <main id="request-screen" class="screen">
+
+      <header class="profile-topbar">
+        <button class="back-btn" id="request-back-btn" aria-label="Back">←</button>
+        <h2>Booking Request</h2>
+        <span style="width:40px;"></span>
+      </header>
+
+      <div class="booking-summary">
+        <div class="request-avatar" id="request-avatar">JM</div>
+        <div class="booking-summary-text">
+          <div class="booking-summary-name" id="request-customer-name">Jordan M.</div>
+          <div class="booking-summary-slot" id="request-slot-label">Mon · 9–10 AM</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head"><h3>Requested Service</h3></div>
+        <div class="profile-list">
+          <div class="profile-row">
+            <div class="profile-row-text"><div class="profile-row-title" id="request-service-name">Classic Haircut</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head"><h3>Customer's Description</h3></div>
+        <div class="description-panel">
+          <p id="request-description">—</p>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head"><h3>Reference Images</h3></div>
+        <div class="booking-images-row" id="request-images-row"><!-- injected by JS --></div>
+      </div>
+
+      <div class="request-decision-row">
+        <button class="request-decision-btn decline" id="request-decline-btn">Decline</button>
+        <button class="request-decision-btn accept" id="request-accept-btn">Accept</button>
+      </div>
+
+      <div class="bottom-spacer"></div>
+    </main>
+
+    <!-- ============ EDIT BUSINESS — services, description, and
+         timetable management for the provider's own listing ============ -->
+    <main id="edit-business-screen" class="screen">
+
+      <header class="profile-topbar">
+        <button class="back-btn" id="edit-business-back-btn" aria-label="Back">←</button>
+        <h2>Edit Business</h2>
+        <span style="width:40px;"></span>
+      </header>
+
+      <section class="section">
+        <div class="section-head"><h3>Services</h3></div>
+        <div class="profile-list" id="edit-services-list"><!-- injected by JS --></div>
+        <div class="edit-add-form" id="edit-service-form" style="display:none;">
+          <input type="text" id="new-service-name" class="edit-input" placeholder="Service name" />
+          <div class="edit-input-row">
+            <input type="text" id="new-service-duration" class="edit-input" placeholder="Duration (e.g. 30 min)" />
+            <input type="number" id="new-service-price" class="edit-input" placeholder="Price ($)" />
+          </div>
+          <button class="btn-primary" id="confirm-add-service-btn" style="width:100%;">Add Service</button>
+        </div>
+        <button class="wallet-btn-secondary" id="show-add-service-btn" style="width:100%; margin-top:10px;">+ Add Service</button>
+      </section>
+
+      <section class="section">
+        <div class="section-head"><h3>Description</h3></div>
+        <textarea id="edit-description-input" class="booking-textarea" style="min-height:130px;"></textarea>
+        <button class="btn-primary" id="save-description-btn" style="width:100%; margin-top:10px;">Save Description</button>
+      </section>
+
+      <section class="section">
+        <div class="section-head"><h3>Timetable</h3></div>
+        <div id="edit-timetable-list"><!-- injected by JS --></div>
+      </section>
 
       <div class="bottom-spacer"></div>
     </main>
@@ -2015,6 +2406,11 @@ const homeScreen = document.getElementById("home-screen");
 const detailScreen = document.getElementById("detail-screen");
 const profileScreen = document.getElementById("profile-screen");
 const bookingScreen = document.getElementById("booking-screen");
+const settingsScreen = document.getElementById("settings-screen");
+const providerHomeScreen = document.getElementById("provider-home-screen");
+const providerProfileScreen = document.getElementById("provider-profile-screen");
+const requestScreen = document.getElementById("request-screen");
+const editBusinessScreen = document.getElementById("edit-business-screen");
 const backBtn = document.getElementById("back-btn");
 const profileBtn = document.getElementById("profile-btn");
 const profileBackBtn = document.getElementById("profile-back-btn");
@@ -2025,11 +2421,19 @@ const tabContent = document.getElementById("tab-content");
 const bestProvidersScroll = document.getElementById("best-providers-scroll");
 const favouritesScroll = document.getElementById("favourites-scroll");
 
+const ALL_SCREENS = [homeScreen, detailScreen, profileScreen, bookingScreen, settingsScreen, providerHomeScreen, providerProfileScreen, requestScreen, editBusinessScreen];
+
+// Customer is the only mode anyone starts in or sees mentioned anywhere in
+// the UI by default. It only becomes Provider once someone explicitly
+// flips the toggle buried in Settings — nothing on the customer side
+// references Provider mode at all.
+let appMode = "customer";
+
 let currentProviderData = null;
 let currentTab = "services";
 
 function showScreen(screen) {
-  [homeScreen, detailScreen, profileScreen, bookingScreen].forEach((s) => s.classList.remove("active"));
+  ALL_SCREENS.forEach((s) => s.classList.remove("active"));
   screen.classList.add("active");
   window.scrollTo({ top: 0, behavior: "instant" });
 }
@@ -2165,15 +2569,92 @@ function timetablePanelHTML(data) {
   `;
 }
 
-// ---------- Provider Mode: the provider's own weekly availability, same
-// box style as the customer-facing timetable, but read-only (their own
-// schedule, not something they book against). ----------
-const MY_PROVIDER_SCHEDULE = { name: "Koluy Adeyemi Barber Availability", hours: HOURS_STANDARD };
+// ---------- Provider Feed: the provider's own business, viewed through
+// the exact same hero+tabs layout a customer sees when they tap this
+// business's card. MY_BUSINESS reuses the real Razor & Co. Barbershop
+// place object so services/hours/reviews/description all stay consistent
+// with what customers already see on the customer side. ----------
+const MY_BUSINESS = CATEGORY_DATA.hair.subcategories["Barber"].places[0];
 
-function renderProviderTimetable() {
-  const container = document.getElementById("provider-timetable-grid");
-  if (!container) return;
-  const dayBlocks = MY_PROVIDER_SCHEDULE.hours.map(([day, hrs]) => {
+// Slot state starts from the same deterministic hash as the customer view,
+// but a booked slot can additionally be "pending" (an unreviewed request)
+// vs "confirmed". Accept/Decline write into slotOverrides so state persists
+// for the rest of the session without needing a backend.
+const slotOverrides = {};
+function slotKey(day, idx) { return `${day}-${idx}`; }
+
+function getSlotState(day, idx) {
+  const key = slotKey(day, idx);
+  if (slotOverrides[key]) return slotOverrides[key];
+  if (!isSlotBooked(MY_BUSINESS, day, idx)) return "empty";
+  const seed2 = (MY_BUSINESS.name.length * 5 + day.charCodeAt(0) * 3 + idx * 7) % 3;
+  return seed2 === 0 ? "pending" : "confirmed";
+}
+
+// Deterministic fake request details for a pending slot, so the same slot
+// always shows the same customer/description/images during a session.
+const REQUEST_NAMES = ["Jordan M.", "Casey L.", "Taylor R.", "Morgan S.", "Alex P.", "Riley K."];
+const REQUEST_DESCRIPTIONS = [
+  "Looking for a skin fade with a sharp line up, medium length on top please.",
+  "Just need a basic trim, nothing too short on the sides.",
+  "Want to try a textured crop — attached a couple photos of what I mean.",
+  "Beard shape-up along with the haircut if there's time.",
+  "First time here — go with whatever suits a round face best.",
+  "Low fade, keep some length on top, similar to my last cut.",
+];
+function initialsFor(name) {
+  return name.split(" ").map((p) => p[0]).join("").toUpperCase();
+}
+function requestForSlot(day, idx, timeLabel) {
+  const seed = (day.charCodeAt(0) * 11 + idx * 13) % REQUEST_NAMES.length;
+  const seed2 = (day.charCodeAt(0) * 7 + idx * 5) % REQUEST_DESCRIPTIONS.length;
+  const service = MY_BUSINESS.services[idx % MY_BUSINESS.services.length];
+  const name = REQUEST_NAMES[seed];
+  return {
+    day, idx, timeLabel,
+    customerName: name,
+    initials: initialsFor(name),
+    serviceName: service.name,
+    description: REQUEST_DESCRIPTIONS[seed2],
+    images: [
+      `https://loremflickr.com/300/300/haircut,inspiration?lock=${day.charCodeAt(0) + idx}`,
+      `https://loremflickr.com/300/300/hairstyle,men?lock=${day.charCodeAt(0) + idx + 1}`,
+    ],
+  };
+}
+
+let currentRequest = null;
+
+function openRequest(day, idx, timeLabel) {
+  currentRequest = requestForSlot(day, idx, timeLabel);
+  document.getElementById("request-avatar").textContent = currentRequest.initials;
+  document.getElementById("request-customer-name").textContent = currentRequest.customerName;
+  document.getElementById("request-slot-label").textContent = `${day} · ${timeLabel}`;
+  document.getElementById("request-service-name").textContent = currentRequest.serviceName;
+  document.getElementById("request-description").textContent = currentRequest.description;
+
+  const imagesRow = document.getElementById("request-images-row");
+  imagesRow.innerHTML = currentRequest.images.map((src) => `
+    <div class="booking-image-thumb"><img src="${src}" alt="Reference from customer" loading="lazy" onerror="this.closest('.booking-image-thumb').remove()" /></div>
+  `).join("");
+
+  showScreen(requestScreen);
+}
+
+document.getElementById("request-accept-btn").addEventListener("click", () => {
+  if (currentRequest) slotOverrides[slotKey(currentRequest.day, currentRequest.idx)] = "confirmed";
+  showScreen(providerHomeScreen);
+  renderFeedTab("timetable");
+});
+document.getElementById("request-decline-btn").addEventListener("click", () => {
+  if (currentRequest) slotOverrides[slotKey(currentRequest.day, currentRequest.idx)] = "empty";
+  showScreen(providerHomeScreen);
+  renderFeedTab("timetable");
+});
+document.getElementById("request-back-btn").addEventListener("click", () => showScreen(providerHomeScreen));
+
+function feedTimetableHTML() {
+  const dayBlocks = MY_BUSINESS.hours.map(([day, hrs]) => {
     if (hrs === "Closed") {
       return `
         <div class="timetable-day-block">
@@ -2187,10 +2668,14 @@ function renderProviderTimetable() {
     }
     const slots = generateDaySlots(hrs);
     const slotHTML = slots.map((label, idx) => {
-      if (isSlotBooked(MY_PROVIDER_SCHEDULE, day, idx)) {
+      const state = getSlotState(day, idx);
+      if (state === "pending") {
+        return `<button type="button" class="timetable-slot pending-slot" data-day="${day}" data-idx="${idx}" data-time="${label}"><span>${label}</span><span class="slot-tag">Review</span></button>`;
+      }
+      if (state === "confirmed") {
         return `<div class="timetable-slot booked-slot"><span>${label}</span><span class="slot-tag">Booked</span></div>`;
       }
-      return `<div class="timetable-slot empty-slot"><span class="slot-plus">✓</span><span>${label}</span></div>`;
+      return `<div class="timetable-slot empty-slot" style="cursor:default;"><span class="slot-plus">✓</span><span>${label}</span></div>`;
     }).join("");
     return `
       <div class="timetable-day-block">
@@ -2203,17 +2688,180 @@ function renderProviderTimetable() {
     `;
   }).join("");
 
-  container.innerHTML = `
+  return `
     <div class="timetable-grid-wrap">
       ${dayBlocks}
       <div class="timetable-legend">
         <span><span class="legend-dot empty"></span> Open</span>
-        <span><span class="legend-dot booked"></span> Booked</span>
+        <span><span class="legend-dot pending"></span> Tap to review</span>
+        <span><span class="legend-dot booked"></span> Confirmed</span>
       </div>
     </div>
   `;
 }
-renderProviderTimetable();
+
+function renderFeedTab(tabName) {
+  const content = document.getElementById("feed-tab-content");
+  document.querySelectorAll("#provider-home-screen .tab").forEach((t) =>
+    t.classList.toggle("active", t.dataset.feedTab === tabName)
+  );
+  if (tabName === "services") {
+    content.innerHTML = servicesPanelHTML(MY_BUSINESS);
+  } else if (tabName === "description") {
+    content.innerHTML = descriptionPanelHTML(MY_BUSINESS);
+  } else if (tabName === "timetable") {
+    content.innerHTML = feedTimetableHTML();
+    content.querySelectorAll(".pending-slot").forEach((btn) => {
+      btn.addEventListener("click", () => openRequest(btn.dataset.day, Number(btn.dataset.idx), btn.dataset.time));
+    });
+  } else if (tabName === "reviews") {
+    content.innerHTML = reviewsPanelHTML(MY_BUSINESS);
+  }
+}
+
+document.querySelectorAll("#provider-home-screen .tab").forEach((tab) => {
+  tab.addEventListener("click", () => renderFeedTab(tab.dataset.feedTab));
+});
+
+function renderProviderFeed() {
+  const heroTile = document.getElementById("feed-hero-tile");
+  heroTile.className = `tile ${MY_BUSINESS.tileClass}`;
+  heroTile.innerHTML = tileInnerHTML(MY_BUSINESS);
+  document.getElementById("feed-role").textContent = MY_BUSINESS.role;
+  document.getElementById("feed-name").textContent = MY_BUSINESS.name;
+  document.getElementById("feed-address").textContent = MY_BUSINESS.address;
+  document.getElementById("feed-rating").textContent = MY_BUSINESS.rating;
+  document.getElementById("feed-reviews").textContent = MY_BUSINESS.reviews;
+  renderFeedTab("services");
+}
+renderProviderFeed();
+
+// ---------- Edit Business: services, description, timetable ----------
+function currentFeedTabName() {
+  const activeTab = document.querySelector("#provider-home-screen .tab.active");
+  return activeTab ? activeTab.dataset.feedTab : "services";
+}
+
+document.getElementById("edit-business-btn").addEventListener("click", () => {
+  renderEditServices();
+  document.getElementById("edit-description-input").value = MY_BUSINESS.description;
+  renderEditTimetable();
+  showScreen(editBusinessScreen);
+});
+document.getElementById("edit-business-back-btn").addEventListener("click", () => {
+  showScreen(providerHomeScreen);
+  renderFeedTab(currentFeedTabName());
+});
+
+// -- Services --
+function renderEditServices() {
+  const list = document.getElementById("edit-services-list");
+  list.innerHTML = "";
+  MY_BUSINESS.services.forEach((service, idx) => {
+    const row = document.createElement("div");
+    row.className = "profile-row";
+    row.innerHTML = `
+      <div class="profile-row-text">
+        <div class="profile-row-title">${service.name}</div>
+        <div class="profile-row-sub">${service.duration}</div>
+      </div>
+      <div class="service-price">$${service.price}</div>
+      <button class="remove-row-btn" aria-label="Remove service">✕</button>
+    `;
+    row.querySelector(".remove-row-btn").addEventListener("click", () => {
+      if (MY_BUSINESS.services.length <= 1) return; // keep at least one service
+      MY_BUSINESS.services.splice(idx, 1);
+      MY_BUSINESS.price = Math.min(...MY_BUSINESS.services.map((s) => s.price));
+      renderEditServices();
+    });
+    list.appendChild(row);
+  });
+}
+
+const showAddServiceBtn = document.getElementById("show-add-service-btn");
+const editServiceForm = document.getElementById("edit-service-form");
+showAddServiceBtn.addEventListener("click", () => {
+  const showing = editServiceForm.style.display !== "none";
+  editServiceForm.style.display = showing ? "none" : "flex";
+  showAddServiceBtn.textContent = showing ? "+ Add Service" : "Cancel";
+});
+document.getElementById("confirm-add-service-btn").addEventListener("click", () => {
+  const nameInput = document.getElementById("new-service-name");
+  const durationInput = document.getElementById("new-service-duration");
+  const priceInput = document.getElementById("new-service-price");
+  const name = nameInput.value.trim();
+  const duration = durationInput.value.trim();
+  const price = Number(priceInput.value);
+  if (!name || !duration || !price) return;
+
+  MY_BUSINESS.services.push({ name, duration, price });
+  MY_BUSINESS.price = Math.min(...MY_BUSINESS.services.map((s) => s.price));
+  nameInput.value = "";
+  durationInput.value = "";
+  priceInput.value = "";
+  editServiceForm.style.display = "none";
+  showAddServiceBtn.textContent = "+ Add Service";
+  renderEditServices();
+});
+
+// -- Description --
+document.getElementById("save-description-btn").addEventListener("click", () => {
+  const val = document.getElementById("edit-description-input").value.trim();
+  if (val) MY_BUSINESS.description = val;
+});
+
+// -- Timetable: toggle day off, add/remove an hour of availability --
+const savedDayHours = {};
+function renderEditTimetable() {
+  const container = document.getElementById("edit-timetable-list");
+  container.innerHTML = "";
+  MY_BUSINESS.hours.forEach(([day, hrs], dayIdx) => {
+    const isClosed = hrs === "Closed";
+    const block = document.createElement("div");
+    block.className = "edit-day-block";
+    block.innerHTML = `
+      <div class="edit-day-head">
+        <span class="edit-day-name">${day}</span>
+        <button class="toggle-switch ${isClosed ? "" : "on"}" data-day-off-toggle role="switch" aria-checked="${!isClosed}">
+          <span class="toggle-knob"></span>
+        </button>
+      </div>
+      <div class="edit-day-controls">
+        <span class="edit-day-hours ${isClosed ? "closed-label" : ""}">${isClosed ? "Day off" : hrs}</span>
+        <div class="hour-adjust-row" style="${isClosed ? "display:none;" : ""}">
+          <button class="hour-adjust-btn" data-adjust="-1" aria-label="Remove an hour">−</button>
+          <button class="hour-adjust-btn" data-adjust="1" aria-label="Add an hour">+</button>
+        </div>
+      </div>
+    `;
+
+    block.querySelector("[data-day-off-toggle]").addEventListener("click", () => {
+      if (MY_BUSINESS.hours[dayIdx][1] === "Closed") {
+        MY_BUSINESS.hours[dayIdx][1] = savedDayHours[day] || "9:00 AM – 6:00 PM";
+      } else {
+        savedDayHours[day] = MY_BUSINESS.hours[dayIdx][1];
+        MY_BUSINESS.hours[dayIdx][1] = "Closed";
+      }
+      renderEditTimetable();
+    });
+
+    if (!isClosed) {
+      block.querySelectorAll("[data-adjust]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const delta = Number(btn.dataset.adjust);
+          const [openStr, closeStr] = MY_BUSINESS.hours[dayIdx][1].split(" – ");
+          const openH = hourStringTo24(openStr);
+          let closeH = hourStringTo24(closeStr) + delta;
+          closeH = Math.max(openH + 1, Math.min(23, closeH));
+          MY_BUSINESS.hours[dayIdx][1] = `${openStr} – ${formatHourLabel(closeH)}`;
+          renderEditTimetable();
+        });
+      });
+    }
+
+    container.appendChild(block);
+  });
+}
 
 function reviewsPanelHTML(data) {
   const list = data.reviewsList || [];
@@ -2271,8 +2919,8 @@ function renderDetail(data) {
   document.getElementById("detail-reviews").textContent = data.reviews;
   document.getElementById("detail-distance").textContent = data.distance;
 
-  document.querySelectorAll(".tab").forEach((t) => t.classList.remove("active"));
-  document.querySelector('.tab[data-tab="services"]').classList.add("active");
+  document.querySelectorAll("#detail-screen .tab").forEach((t) => t.classList.remove("active"));
+  document.querySelector('#detail-screen .tab[data-tab="services"]').classList.add("active");
   renderTab("services");
 
   showScreen(detailScreen);
@@ -2283,7 +2931,9 @@ function openProvider(id) {
   if (data) renderDetail(data);
 }
 
-function goHome() { showScreen(homeScreen); }
+function goHome() {
+  showScreen(appMode === "provider" ? providerHomeScreen : homeScreen);
+}
 
 document.querySelectorAll("[data-provider]").forEach((el) => {
   el.addEventListener("click", () => openProvider(el.dataset.provider));
@@ -2292,29 +2942,50 @@ document.querySelectorAll("[data-provider]").forEach((el) => {
 
 backBtn.addEventListener("click", goHome);
 
-document.querySelectorAll(".tab").forEach((tab) => {
+document.querySelectorAll("#detail-screen .tab").forEach((tab) => {
   tab.addEventListener("click", () => {
-    document.querySelectorAll(".tab").forEach((t) => t.classList.remove("active"));
+    document.querySelectorAll("#detail-screen .tab").forEach((t) => t.classList.remove("active"));
     tab.classList.add("active");
     renderTab(tab.dataset.tab);
   });
 });
 
-// ---------- Profile screen + Customer/Provider mode switching ----------
+// ---------- Profile: customer icon opens the customer profile, provider
+// feed's icon opens its own provider profile. Settings is shared, and its
+// back button returns to whichever profile screen it was opened from. ----------
 profileBtn.addEventListener("click", () => showScreen(profileScreen));
+document.getElementById("provider-profile-btn").addEventListener("click", () => showScreen(providerProfileScreen));
 profileBackBtn.addEventListener("click", goHome);
+document.getElementById("provider-profile-back-btn").addEventListener("click", goHome);
 
-document.querySelectorAll(".mode-btn").forEach((btn) => {
-  btn.addEventListener("click", () => {
-    const mode = btn.dataset.mode;
-    document.querySelectorAll(".mode-btn").forEach((b) => b.classList.remove("active"));
-    btn.classList.add("active");
-    document.querySelectorAll(".mode-panel").forEach((p) => {
-      p.classList.toggle("active", p.dataset.modePanel === mode);
-    });
-    document.getElementById("profile-mode-label").textContent =
-      mode === "customer" ? "Customer Account" : "Provider Account";
-  });
+document.getElementById("open-settings-btn").addEventListener("click", () => showScreen(settingsScreen));
+document.getElementById("open-settings-btn-provider").addEventListener("click", () => showScreen(settingsScreen));
+document.getElementById("settings-back-btn").addEventListener("click", () => {
+  showScreen(appMode === "provider" ? providerProfileScreen : profileScreen);
+});
+
+const providerModeToggle = document.getElementById("provider-mode-toggle");
+const providerModeDesc = document.getElementById("provider-mode-desc");
+
+providerModeToggle.addEventListener("click", () => {
+  appMode = appMode === "customer" ? "provider" : "customer";
+  const isProvider = appMode === "provider";
+
+  providerModeToggle.classList.toggle("on", isProvider);
+  providerModeToggle.setAttribute("aria-checked", String(isProvider));
+  providerModeDesc.textContent = isProvider
+    ? "You're set up as a service provider. Switch off to go back to browsing as a customer."
+    : "Switch on to manage bookings, services, and availability as a provider.";
+
+  // Jump straight into the new feed so switching is immediately visible —
+  // this is the whole point of flipping the toggle.
+  goHome();
+});
+
+const statusToggle = document.getElementById("status-toggle");
+statusToggle.addEventListener("click", () => {
+  const isOn = statusToggle.classList.toggle("on");
+  statusToggle.setAttribute("aria-checked", String(isOn));
 });
 
 // ---------- Booking flow: tap an empty timetable slot → describe + attach

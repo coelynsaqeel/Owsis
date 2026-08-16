@@ -61,7 +61,7 @@ img { display: block; max-width: 100%; }
   margin: 0 auto;
   background: var(--bg);
   position: relative;
-  overflow-x: hidden;
+  overflow-x: clip;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
@@ -923,7 +923,22 @@ img { display: block; max-width: 100%; }
 .bottom-spacer { height: 26px; }
 
 /* ============ DETAIL SCREEN ============ */
-#detail-screen { padding: 20px 20px 24px; }
+/* The hero, title/rating, and tab bar ("category bar") stay pinned at the
+   top while only the active tab's content scrolls beneath them — used on
+   both the customer-facing provider page and the provider's own feed. */
+#detail-screen, #provider-home-screen { padding: 0; }
+
+.sticky-detail-top {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: var(--bg);
+  padding: 20px 20px 0;
+}
+
+.detail-body-top { padding-top: 20px; }
+
+.tab-scroll-area { padding: 0 20px 24px; }
 
 .detail-hero {
   position: relative;
@@ -984,8 +999,6 @@ img { display: block; max-width: 100%; }
   backdrop-filter: blur(3px);
 }
 .edit-chip:active { background: rgba(20,20,20,0.9); }
-
-.detail-body { padding: 20px 0 0; }
 
 .detail-title-row {
   display: flex;
@@ -1553,34 +1566,38 @@ img { display: block; max-width: 100%; }
     <!-- ============ PROVIDER DETAIL SCREEN ============ -->
     <main id="detail-screen" class="screen">
 
-      <div class="detail-hero">
-        <div id="detail-hero-tile" class="tile tile-hair"><!-- injected by JS --></div>
-        <button class="back-btn" id="back-btn" aria-label="Back">←</button>
-        <span class="status-chip available">● Available</span>
-        <span class="status-chip role" id="detail-role">Barber</span>
+      <div class="sticky-detail-top">
+        <div class="detail-hero">
+          <div id="detail-hero-tile" class="tile tile-hair"><!-- injected by JS --></div>
+          <button class="back-btn" id="back-btn" aria-label="Back">←</button>
+          <span class="status-chip available">● Available</span>
+          <span class="status-chip role" id="detail-role">Barber</span>
+        </div>
+
+        <div class="detail-body-top">
+          <div class="detail-title-row">
+            <div>
+              <h2 id="detail-name">Razor &amp; Co. Barbershop</h2>
+              <div class="detail-loc">📍 <span id="detail-address">5 Albert Road, Barnoldswick</span></div>
+            </div>
+            <div class="rating-box">
+              <div class="rating-star">★ <span id="detail-rating">4.9</span></div>
+              <div class="rating-count"><span id="detail-reviews">214</span> reviews</div>
+            </div>
+          </div>
+
+          <div class="distance-chip"><span id="detail-distance">0.8 km</span></div>
+
+          <div class="tab-row">
+            <button class="tab active" data-tab="services">Services</button>
+            <button class="tab" data-tab="description">Description</button>
+            <button class="tab" data-tab="timetable">Timetable</button>
+            <button class="tab" data-tab="reviews">Reviews</button>
+          </div>
+        </div>
       </div>
 
-      <div class="detail-body">
-        <div class="detail-title-row">
-          <div>
-            <h2 id="detail-name">Razor &amp; Co. Barbershop</h2>
-            <div class="detail-loc">📍 <span id="detail-address">5 Albert Road, Barnoldswick</span></div>
-          </div>
-          <div class="rating-box">
-            <div class="rating-star">★ <span id="detail-rating">4.9</span></div>
-            <div class="rating-count"><span id="detail-reviews">214</span> reviews</div>
-          </div>
-        </div>
-
-        <div class="distance-chip"><span id="detail-distance">0.8 km</span></div>
-
-        <div class="tab-row">
-          <button class="tab active" data-tab="services">Services</button>
-          <button class="tab" data-tab="description">Description</button>
-          <button class="tab" data-tab="timetable">Timetable</button>
-          <button class="tab" data-tab="reviews">Reviews</button>
-        </div>
-
+      <div class="tab-scroll-area">
         <div id="tab-content"><!-- injected --></div>
       </div>
     </main>
@@ -1895,41 +1912,44 @@ img { display: block; max-width: 100%; }
          own view of it. ============ -->
     <main id="provider-home-screen" class="screen">
 
-      <header class="topbar">
-        <div class="brand-mark">Owsis</div>
-        <button class="bell-btn" id="provider-profile-btn" aria-label="Profile">👤</button>
-      </header>
+      <div class="sticky-detail-top">
+        <header class="topbar">
+          <div class="brand-mark">Owsis</div>
+          <button class="bell-btn" id="provider-profile-btn" aria-label="Profile">👤</button>
+        </header>
 
-      <div class="detail-hero provider-hero-card">
-        <div id="feed-hero-tile" class="tile tile-hair"><!-- injected by JS --></div>
-        <span class="status-chip available">● Open</span>
-        <button class="status-chip edit-chip" id="edit-business-btn" aria-label="Edit business">✏️ Edit</button>
-        <span class="status-chip role" id="feed-role">Barber</span>
+        <div class="detail-hero provider-hero-card">
+          <div id="feed-hero-tile" class="tile tile-hair"><!-- injected by JS --></div>
+          <span class="status-chip available">● Open</span>
+          <button class="status-chip edit-chip" id="edit-business-btn" aria-label="Edit business">✏️ Edit</button>
+          <span class="status-chip role" id="feed-role">Barber</span>
+        </div>
+
+        <div class="detail-body-top">
+          <div class="detail-title-row">
+            <div>
+              <h2 id="feed-name">Razor &amp; Co. Barbershop</h2>
+              <div class="detail-loc">📍 <span id="feed-address">5 Albert Road, Barnoldswick</span></div>
+            </div>
+            <div class="rating-box">
+              <div class="rating-star">★ <span id="feed-rating">4.9</span></div>
+              <div class="rating-count"><span id="feed-reviews">214</span> reviews</div>
+            </div>
+          </div>
+
+          <div class="tab-row">
+            <button class="tab active" data-feed-tab="services">Services</button>
+            <button class="tab" data-feed-tab="description">Description</button>
+            <button class="tab" data-feed-tab="timetable">Timetable</button>
+            <button class="tab" data-feed-tab="reviews">Reviews</button>
+          </div>
+        </div>
       </div>
 
-      <div class="detail-body">
-        <div class="detail-title-row">
-          <div>
-            <h2 id="feed-name">Razor &amp; Co. Barbershop</h2>
-            <div class="detail-loc">📍 <span id="feed-address">5 Albert Road, Barnoldswick</span></div>
-          </div>
-          <div class="rating-box">
-            <div class="rating-star">★ <span id="feed-rating">4.9</span></div>
-            <div class="rating-count"><span id="feed-reviews">214</span> reviews</div>
-          </div>
-        </div>
-
-        <div class="tab-row">
-          <button class="tab active" data-feed-tab="services">Services</button>
-          <button class="tab" data-feed-tab="description">Description</button>
-          <button class="tab" data-feed-tab="timetable">Timetable</button>
-          <button class="tab" data-feed-tab="reviews">Reviews</button>
-        </div>
-
+      <div class="tab-scroll-area">
         <div id="feed-tab-content"><!-- injected by JS --></div>
+        <div class="bottom-spacer"></div>
       </div>
-
-      <div class="bottom-spacer"></div>
     </main>
 
     <!-- ============ BOOKING REQUEST — opened by tapping a highlighted
@@ -2112,6 +2132,13 @@ const CATEGORY_DATA = {
         places: [
           { name: "Little Clips", address: "6 Maple Court, Queens", rating: "4.9", reviews: "63", distance: "1.2 km", services: [{ name: "Kids Haircut", duration: "25 min", price: 20 }, { name: "First Haircut Package", duration: "30 min", price: 25 }] },
           { name: "Small Fry Studio", address: "11 Buttercup Ln, Brooklyn", rating: "4.7", reviews: "51", distance: "1.6 km", services: [{ name: "Kids Trim", duration: "20 min", price: 18 }, { name: "Kids Fade", duration: "30 min", price: 24 }] },
+        ],
+      },
+      "Hair Stylist": {
+        role: "Hair Stylist", icon: "💇‍♀️", hours: HOURS_STANDARD, photoQuery: "hairstylist,salon,blowout",
+        places: [
+          { name: "The Style Loft", address: "19 Vogue Street, Manhattan", rating: "4.9", reviews: "188", distance: "1.4 km", services: [{ name: "Cut & Style", duration: "60 min", price: 65 }, { name: "Blowout", duration: "45 min", price: 45 }] },
+          { name: "Mane Studio", address: "27 Silk Ave, Brooklyn", rating: "4.7", reviews: "142", distance: "1.8 km", services: [{ name: "Signature Styling", duration: "50 min", price: 55 }, { name: "Updo", duration: "40 min", price: 50 }] },
         ],
       },
     },

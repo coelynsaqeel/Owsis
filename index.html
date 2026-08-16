@@ -568,6 +568,16 @@ img { display: block; max-width: 100%; }
   gap: 10px;
 }
 
+/* Caps History / My Bookings to ~3 visible rows so extra entries scroll
+   inside their own box instead of growing the whole Profile screen. */
+.scrollable-list {
+  max-height: 208px;
+  overflow-y: auto;
+  scrollbar-width: none;
+  padding-right: 2px;
+}
+.scrollable-list::-webkit-scrollbar { display: none; }
+
 .profile-row {
   display: flex;
   align-items: center;
@@ -1258,29 +1268,30 @@ img { display: block; max-width: 100%; }
   justify-content: space-between;
 }
 .edit-day-name { font-weight: 800; font-size: 0.92rem; }
-.edit-day-controls {
+.edit-day-hours { font-size: 0.82rem; color: var(--text-dim); margin-top: 10px; }
+.edit-day-hours.closed-label { color: var(--text-faint); font-style: italic; }
+
+.slot-range-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+}
+.slot-range-chip {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 10px;
-}
-.edit-day-hours { font-size: 0.82rem; color: var(--text-dim); }
-.edit-day-hours.closed-label { color: var(--text-faint); font-style: italic; }
-.hour-adjust-row { display: flex; gap: 8px; }
-.hour-adjust-btn {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
   background: var(--surface-3);
+  border-radius: var(--radius-sm);
+  padding: 9px 12px;
+  font-size: 0.82rem;
   color: var(--text);
-  font-size: 1rem;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
-.hour-adjust-btn:active { background: var(--gold); color: #171200; }
-.hour-adjust-btn:disabled { opacity: 0.35; }
+.slot-form-label {
+  font-size: 0.7rem;
+  color: var(--text-faint);
+  margin-bottom: 4px;
+}
 
 .booking-images-row {
   display: flex;
@@ -1639,7 +1650,7 @@ img { display: block; max-width: 100%; }
 
       <section class="section">
         <div class="section-head"><h3>My Bookings</h3></div>
-        <div class="profile-list">
+        <div class="profile-list scrollable-list">
           <div class="profile-row">
             <span class="profile-row-icon">✂️</span>
             <div class="profile-row-text">
@@ -1653,6 +1664,22 @@ img { display: block; max-width: 100%; }
             <div class="profile-row-text">
               <div class="profile-row-title">Gel Polish — Nail Artistry Hub</div>
               <div class="profile-row-sub">Aug 2, 2:30 PM</div>
+            </div>
+            <span class="status-pill done">Completed</span>
+          </div>
+          <div class="profile-row">
+            <span class="profile-row-icon">🪡</span>
+            <div class="profile-row-text">
+              <div class="profile-row-title">Small Tattoo — Ink &amp; Iron Parlor</div>
+              <div class="profile-row-sub">Jul 26, 1:00 PM</div>
+            </div>
+            <span class="status-pill done">Completed</span>
+          </div>
+          <div class="profile-row">
+            <span class="profile-row-icon">💆‍♀️</span>
+            <div class="profile-row-text">
+              <div class="profile-row-title">Swedish Massage — Serenity Spa</div>
+              <div class="profile-row-sub">Jul 18, 4:00 PM</div>
             </div>
             <span class="status-pill done">Completed</span>
           </div>
@@ -1778,7 +1805,7 @@ img { display: block; max-width: 100%; }
 
       <section class="section">
         <div class="section-head"><h3>History</h3></div>
-        <div class="profile-list">
+        <div class="profile-list scrollable-list">
           <div class="profile-row">
             <span class="profile-row-icon">✂️</span>
             <div class="profile-row-text">
@@ -1800,6 +1827,22 @@ img { display: block; max-width: 100%; }
             <div class="profile-row-text">
               <div class="profile-row-title">Beard Trim — Chris N.</div>
               <div class="profile-row-sub">Sat, 4:30 PM · $25</div>
+            </div>
+            <span class="status-pill done">Completed</span>
+          </div>
+          <div class="profile-row">
+            <span class="profile-row-icon">✂️</span>
+            <div class="profile-row-text">
+              <div class="profile-row-title">Classic Haircut — Sam W.</div>
+              <div class="profile-row-sub">Thu, 9:30 AM · $35</div>
+            </div>
+            <span class="status-pill done">Completed</span>
+          </div>
+          <div class="profile-row">
+            <span class="profile-row-icon">✂️</span>
+            <div class="profile-row-text">
+              <div class="profile-row-title">Fade &amp; Taper — Avery B.</div>
+              <div class="profile-row-sub">Wed, 3:00 PM · $45</div>
             </div>
             <span class="status-pill done">Completed</span>
           </div>
@@ -2458,7 +2501,7 @@ renderFavourites();
 
 // ---------- Detail screen ----------
 function servicesPanelHTML(data) {
-  return data.services.map((s) => `
+  const rows = data.services.map((s) => `
     <div class="service-row">
       <div>
         <div class="service-name">${s.name}</div>
@@ -2467,6 +2510,7 @@ function servicesPanelHTML(data) {
       <div class="service-price">$${s.price}</div>
     </div>
   `).join("");
+  return `<div class="services-list">${rows}</div>`;
 }
 
 function descriptionPanelHTML(data) {
@@ -2510,13 +2554,21 @@ function formatSlotRange(h) {
   return `${startHH} ${startAmpm}–${endHH} ${endAmpm}`;
 }
 
+// Supports a single range ("9:00 AM – 6:00 PM") or several comma-separated
+// ranges ("9:00 AM – 12:00 PM, 1:00 PM – 6:00 PM") for days with a break
+// or multiple distinct availability windows — used by the editable
+// provider timetable, but works the same for every other business since a
+// plain single-range string has nothing to split on.
 function generateDaySlots(hoursStr) {
-  if (hoursStr === "Closed") return [];
-  const [openStr, closeStr] = hoursStr.split(" – ");
-  const openH = Math.ceil(hourStringTo24(openStr));
-  const closeH = hourStringTo24(closeStr);
-  const slots = [];
-  for (let h = openH; h < closeH; h++) slots.push(formatSlotRange(h));
+  if (hoursStr === "Closed" || !hoursStr) return [];
+  const ranges = hoursStr.split(", ");
+  let slots = [];
+  ranges.forEach((range) => {
+    const [openStr, closeStr] = range.split(" – ");
+    const openH = Math.ceil(hourStringTo24(openStr));
+    const closeH = hourStringTo24(closeStr);
+    for (let h = openH; h < closeH; h++) slots.push(formatSlotRange(h));
+  });
   return slots;
 }
 
@@ -2573,8 +2625,14 @@ function timetablePanelHTML(data) {
 // the exact same hero+tabs layout a customer sees when they tap this
 // business's card. MY_BUSINESS reuses the real Razor & Co. Barbershop
 // place object so services/hours/reviews/description all stay consistent
-// with what customers already see on the customer side. ----------
+// with what customers already see on the customer side. Its "hours" and
+// "services" arrays are deep-cloned rather than referenced directly —
+// every place in the same subcategory shares one hours array by default
+// (e.g. HOURS_STANDARD), so editing MY_BUSINESS in place would otherwise
+// silently rewrite every other business using that same array too.
 const MY_BUSINESS = CATEGORY_DATA.hair.subcategories["Barber"].places[0];
+MY_BUSINESS.hours = MY_BUSINESS.hours.map(([day, hrs]) => [day, hrs]);
+MY_BUSINESS.services = MY_BUSINESS.services.map((s) => ({ ...s }));
 
 // Slot state starts from the same deterministic hash as the customer view,
 // but a booked slot can additionally be "pending" (an unreviewed request)
@@ -2810,13 +2868,42 @@ document.getElementById("save-description-btn").addEventListener("click", () => 
   if (val) MY_BUSINESS.description = val;
 });
 
-// -- Timetable: toggle day off, add/remove an hour of availability --
+// -- Timetable: add a slot from a specific time to a specific time, or
+// remove one specific existing slot range. A day with no ranges left is
+// automatically "Day off"; toggling a day back on adds a default range. --
 const savedDayHours = {};
+const HOUR_OPTIONS = [];
+for (let h = 6; h <= 22; h++) HOUR_OPTIONS.push(h);
+
+function hourSelectHTML(selectId, selectedH) {
+  const opts = HOUR_OPTIONS.map((h) =>
+    `<option value="${h}" ${h === selectedH ? "selected" : ""}>${formatHourLabel(h)}</option>`
+  ).join("");
+  return `<select class="edit-input" id="${selectId}">${opts}</select>`;
+}
+
+function daysRanges(hrs) {
+  return hrs === "Closed" || !hrs ? [] : hrs.split(", ");
+}
+
+const openSlotForms = {}; // tracks which day's "add slot" form is open
+
 function renderEditTimetable() {
   const container = document.getElementById("edit-timetable-list");
   container.innerHTML = "";
+
   MY_BUSINESS.hours.forEach(([day, hrs], dayIdx) => {
-    const isClosed = hrs === "Closed";
+    const ranges = daysRanges(hrs);
+    const isClosed = ranges.length === 0;
+    const formOpen = !!openSlotForms[day];
+
+    const chipsHTML = ranges.map((range, rangeIdx) => `
+      <div class="slot-range-chip">
+        <span>${range}</span>
+        <button class="remove-row-btn" data-remove-range="${rangeIdx}" aria-label="Remove slot">✕</button>
+      </div>
+    `).join("");
+
     const block = document.createElement("div");
     block.className = "edit-day-block";
     block.innerHTML = `
@@ -2826,18 +2913,33 @@ function renderEditTimetable() {
           <span class="toggle-knob"></span>
         </button>
       </div>
-      <div class="edit-day-controls">
-        <span class="edit-day-hours ${isClosed ? "closed-label" : ""}">${isClosed ? "Day off" : hrs}</span>
-        <div class="hour-adjust-row" style="${isClosed ? "display:none;" : ""}">
-          <button class="hour-adjust-btn" data-adjust="-1" aria-label="Remove an hour">−</button>
-          <button class="hour-adjust-btn" data-adjust="1" aria-label="Add an hour">+</button>
-        </div>
-      </div>
+      ${isClosed
+        ? `<div class="edit-day-hours closed-label">Day off</div>`
+        : `
+          <div class="slot-range-list">${chipsHTML}</div>
+          <button class="wallet-btn-secondary" data-toggle-add-slot style="width:100%; margin-top:10px;">
+            ${formOpen ? "Cancel" : "+ Add Slot"}
+          </button>
+          <div class="edit-add-form" style="${formOpen ? "" : "display:none;"} margin-top:10px;">
+            <div class="edit-input-row">
+              <div style="flex:1;">
+                <div class="slot-form-label">From</div>
+                ${hourSelectHTML(`slot-from-${dayIdx}`, 9)}
+              </div>
+              <div style="flex:1;">
+                <div class="slot-form-label">To</div>
+                ${hourSelectHTML(`slot-to-${dayIdx}`, 17)}
+              </div>
+            </div>
+            <button class="btn-primary" data-confirm-add-slot style="width:100%;">Add Slot</button>
+          </div>
+        `
+      }
     `;
 
     block.querySelector("[data-day-off-toggle]").addEventListener("click", () => {
-      if (MY_BUSINESS.hours[dayIdx][1] === "Closed") {
-        MY_BUSINESS.hours[dayIdx][1] = savedDayHours[day] || "9:00 AM – 6:00 PM";
+      if (isClosed) {
+        MY_BUSINESS.hours[dayIdx][1] = savedDayHours[day] || "9:00 AM – 5:00 PM";
       } else {
         savedDayHours[day] = MY_BUSINESS.hours[dayIdx][1];
         MY_BUSINESS.hours[dayIdx][1] = "Closed";
@@ -2845,23 +2947,43 @@ function renderEditTimetable() {
       renderEditTimetable();
     });
 
-    if (!isClosed) {
-      block.querySelectorAll("[data-adjust]").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          const delta = Number(btn.dataset.adjust);
-          const [openStr, closeStr] = MY_BUSINESS.hours[dayIdx][1].split(" – ");
-          const openH = hourStringTo24(openStr);
-          let closeH = hourStringTo24(closeStr) + delta;
-          closeH = Math.max(openH + 1, Math.min(23, closeH));
-          MY_BUSINESS.hours[dayIdx][1] = `${openStr} – ${formatHourLabel(closeH)}`;
-          renderEditTimetable();
-        });
+    block.querySelectorAll("[data-remove-range]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const rangeIdx = Number(btn.dataset.removeRange);
+        const remaining = daysRanges(MY_BUSINESS.hours[dayIdx][1]);
+        remaining.splice(rangeIdx, 1);
+        MY_BUSINESS.hours[dayIdx][1] = remaining.length ? remaining.join(", ") : "Closed";
+        renderEditTimetable();
+      });
+    });
+
+    const toggleAddBtn = block.querySelector("[data-toggle-add-slot]");
+    if (toggleAddBtn) {
+      toggleAddBtn.addEventListener("click", () => {
+        openSlotForms[day] = !openSlotForms[day];
+        renderEditTimetable();
+      });
+    }
+
+    const confirmBtn = block.querySelector("[data-confirm-add-slot]");
+    if (confirmBtn) {
+      confirmBtn.addEventListener("click", () => {
+        const fromH = Number(document.getElementById(`slot-from-${dayIdx}`).value);
+        const toH = Number(document.getElementById(`slot-to-${dayIdx}`).value);
+        if (toH <= fromH) return;
+        const newRange = `${formatHourLabel(fromH)} – ${formatHourLabel(toH)}`;
+        const existing = daysRanges(MY_BUSINESS.hours[dayIdx][1]);
+        existing.push(newRange);
+        MY_BUSINESS.hours[dayIdx][1] = existing.join(", ");
+        openSlotForms[day] = false;
+        renderEditTimetable();
       });
     }
 
     container.appendChild(block);
   });
 }
+
 
 function reviewsPanelHTML(data) {
   const list = data.reviewsList || [];
